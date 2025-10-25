@@ -61,9 +61,9 @@ export default function Header() {
                   "_blank",
                 )
               }}
-              className="bg-primary hover:bg-primary/90"
+              className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-bold px-6 py-2 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 border-2 border-orange-300 hover:border-orange-400 animate-pulse"
             >
-              Book Now
+              📞 Book Now
             </Button>
           </nav>
 
@@ -94,9 +94,9 @@ export default function Header() {
                 )
                 setIsMobileMenuOpen(false)
               }}
-              className="w-full mt-4 bg-primary hover:bg-primary/90 text-lg py-3"
+              className="w-full mt-4 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-bold text-lg py-4 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 border-2 border-orange-300 hover:border-orange-400 animate-pulse"
             >
-              Book Now
+              📞 Book Now
             </Button>
           </nav>
         )}

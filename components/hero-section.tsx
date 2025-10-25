@@ -128,9 +128,9 @@ export default function HeroSection() {
                           "_blank",
                         )
                       }}
-                      className="bg-primary hover:bg-primary/90 text-white text-xs sm:text-sm md:text-lg px-3 py-2 sm:px-4 sm:py-3 md:px-8 md:py-6 animate-pulse-glow shadow-2xl w-full sm:w-auto min-h-[44px] touch-manipulation"
+                      className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-bold text-xs sm:text-sm md:text-lg px-4 py-3 sm:px-6 sm:py-4 md:px-10 md:py-6 animate-pulse shadow-2xl w-full sm:w-auto min-h-[48px] touch-manipulation border-2 border-white/30 hover:border-white/50 transform hover:scale-105 transition-all duration-300 backdrop-blur-sm"
                     >
-                      Book Your Event
+                      📞 Book Your Event Now
                     </Button>
                   </div>
                 </div>

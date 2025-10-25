@@ -1,14 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import { MessageCircle, X, ChevronRight, Users, Calendar, MapPin, Clock, Star } from "lucide-react"
+import { MessageCircle, X, Phone, ArrowLeft, Send } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Textarea } from "@/components/ui/textarea"
 
 const services = [
   {
@@ -16,416 +10,259 @@ const services = [
     name: "DJ Services",
     icon: "🎵",
     description: "Professional DJ setup with sound & lighting",
-    questions: [
-      "What type of event is it?",
-      "How many hours do you need?",
-      "Do you need MC services?",
-      "Any specific music preferences?"
-    ]
+    price: "Starting from ₹12,000"
   },
   {
     id: "catering",
-    name: "Catering",
+    name: "Catering Services",
     icon: "🍽️",
     description: "Complete food services for your event",
-    questions: [
-      "How many guests will attend?",
-      "What type of cuisine do you prefer?",
-      "Do you need vegetarian/non-vegetarian options?",
-      "Any dietary restrictions?"
-    ]
+    price: "Starting from ₹150/plate"
   },
   {
     id: "masala",
     name: "Masala Grinding",
     icon: "🌶️",
     description: "Fresh spices ground on-site",
-    questions: [
-      "What spices do you need ground?",
-      "How much quantity do you need?",
-      "What type of event is it?",
-      "Do you need packaging service?"
-    ]
+    price: "Starting from ₹2,000"
   },
   {
     id: "popcorn",
     name: "Popcorn Machine",
     icon: "🍿",
     description: "Fresh popcorn with multiple flavors",
-    questions: [
-      "How many guests will attend?",
-      "What flavors do you prefer?",
-      "How many hours do you need?",
-      "Do you need on-site service?"
-    ]
+    price: "Starting from ₹3,000"
   },
   {
     id: "golgappe",
     name: "Golgappe Service",
     icon: "🥟",
     description: "Fresh golgappe machine & bulk packets",
-    questions: [
-      "Do you need machine or packets?",
-      "How many guests will attend?",
-      "What type of event is it?",
-      "Do you need on-site service?"
-    ]
+    price: "Starting from ₹2,500"
   },
   {
     id: "coffee",
     name: "Coffee Machine",
     icon: "☕",
     description: "Professional coffee brewing station",
-    questions: [
-      "What type of coffee do you prefer?",
-      "How many guests will attend?",
-      "Do you need barista service?",
-      "How many hours do you need?"
-    ]
+    price: "Starting from ₹4,000"
+  },
+  {
+    id: "buffet",
+    name: "Buffet Breakfast",
+    icon: "🥞",
+    description: "Customized breakfast spreads",
+    price: "Starting from ₹200/plate"
+  },
+  {
+    id: "wedding",
+    name: "Wedding Catering",
+    icon: "💒",
+    description: "Full-service wedding catering",
+    price: "Starting from ₹300/plate"
   }
-]
-
-const eventTypes = [
-  "Wedding",
-  "Birthday Party",
-  "Corporate Event",
-  "Anniversary",
-  "Festival/Religious",
-  "Other"
-]
-
-const timeSlots = [
-  "Morning (6 AM - 12 PM)",
-  "Afternoon (12 PM - 6 PM)",
-  "Evening (6 PM - 12 AM)",
-  "Night (12 AM - 6 AM)"
 ]
 
 export default function WhatsAppPopup() {
   const [isOpen, setIsOpen] = useState(false)
-  const [selectedService, setSelectedService] = useState<string | null>(null)
-  const [currentStep, setCurrentStep] = useState(0)
-  const [formData, setFormData] = useState({
-    service: "",
-    eventType: "",
-    guestCount: "",
-    date: "",
-    timeSlot: "",
-    location: "",
-    requirements: "",
-    name: "",
-    phone: ""
-  })
+  const [showServices, setShowServices] = useState(false)
 
-  const handleServiceSelect = (serviceId: string) => {
-    setSelectedService(serviceId)
-    setFormData(prev => ({ ...prev, service: serviceId }))
-    setCurrentStep(1)
-  }
-
-  const handleNext = () => {
-    if (currentStep < 3) {
-      setCurrentStep(currentStep + 1)
-    }
-  }
-
-  const handleBack = () => {
-    if (currentStep > 0) {
-      setCurrentStep(currentStep - 1)
-    }
-  }
-
-  const handleSubmit = () => {
-    const service = services.find(s => s.id === selectedService)
+  const handleServiceSelect = (service: any) => {
     const message = encodeURIComponent(`
-Hello Shalu Caters! I'm interested in your services:
+Hello Shalu Caters! 
 
-Service: ${service?.name}
-Event Type: ${formData.eventType}
-Guests: ${formData.guestCount}
-Date: ${formData.date}
-Time: ${formData.timeSlot}
-Location: ${formData.location}
-Requirements: ${formData.requirements}
+I'm interested in your ${service.name} service.
 
-Contact Details:
-Name: ${formData.name}
-Phone: ${formData.phone}
+Service Details:
+• ${service.name}
+• ${service.description}
+• ${service.price}
 
-Please provide more details and pricing.
+Please provide more details and availability.
+
+Thank you!
     `)
     
     window.open(`https://wa.me/917020924372?text=${message}`, "_blank")
     setIsOpen(false)
-    setCurrentStep(0)
-    setSelectedService(null)
-    setFormData({
-      service: "",
-      eventType: "",
-      guestCount: "",
-      date: "",
-      timeSlot: "",
-      location: "",
-      requirements: "",
-      name: "",
-      phone: ""
-    })
+    setShowServices(false)
   }
 
-  const getCurrentService = () => {
-    return services.find(s => s.id === selectedService)
+  const handleDirectContact = () => {
+    const message = encodeURIComponent(`
+Hello Shalu Caters! 
+
+I would like to know more about your services and get a quote for my event.
+
+Please provide details about:
+• Available services
+• Pricing information
+• Booking process
+
+Thank you!
+    `)
+    
+    window.open(`https://wa.me/917020924372?text=${message}`, "_blank")
+    setIsOpen(false)
+    setShowServices(false)
   }
 
   return (
     <>
-      {/* WhatsApp Button - Mobile Optimized */}
+      {/* WhatsApp Button - Enhanced */}
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 bg-green-500 hover:bg-green-600 text-white p-3 sm:p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110 group"
+        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white p-4 sm:p-5 rounded-full shadow-2xl transition-all duration-300 hover:scale-110 group animate-pulse"
       >
-        <MessageCircle size={20} className="sm:hidden" />
-        <MessageCircle size={24} className="hidden sm:block" />
-        <div className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 bg-red-500 text-white text-xs px-1 py-0.5 sm:px-2 sm:py-1 rounded-full animate-pulse">
+        <MessageCircle size={24} className="sm:hidden" />
+        <MessageCircle size={28} className="hidden sm:block" />
+        <div className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full animate-bounce font-bold">
           Live
         </div>
       </button>
 
-      {/* Popup Overlay - Mobile Optimized */}
+      {/* WhatsApp Chat Interface */}
       {isOpen && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-2 sm:p-4">
-          <Card className="w-full max-w-md max-h-[95vh] overflow-y-auto">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-              <CardTitle className="text-xl font-bold flex items-center">
-                <MessageCircle className="mr-2 text-green-500" size={24} />
-                Book Your Event
-              </CardTitle>
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+          <div className="w-full h-[90vh] sm:h-[600px] sm:w-[400px] bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+            {/* WhatsApp Header */}
+            <div className="bg-green-500 text-white p-4 flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                  <MessageCircle size={20} />
+                </div>
+                <div>
+                  <h3 className="font-bold text-lg">Shalu Caters</h3>
+                  <p className="text-green-100 text-sm">Online • Available now</p>
+                </div>
+              </div>
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => setIsOpen(false)}
-                className="h-8 w-8 p-0"
+                className="text-white hover:bg-white/20 h-8 w-8 p-0"
               >
-                <X size={16} />
+                <X size={18} />
               </Button>
-            </CardHeader>
+            </div>
 
-            <CardContent className="space-y-6">
-              {/* Step 1: Service Selection */}
-              {currentStep === 0 && (
-                <div className="space-y-4">
-                  <div className="text-center">
-                    <h3 className="text-lg font-semibold mb-2">What service do you need?</h3>
-                    <p className="text-sm text-muted-foreground">Select the service you're interested in</p>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 gap-3">
-                    {services.map((service) => (
-                      <button
-                        key={service.id}
-                        onClick={() => handleServiceSelect(service.id)}
-                        className="p-4 border-2 border-gray-200 rounded-lg hover:border-green-500 hover:bg-green-50 transition-all duration-200 text-left group"
-                      >
-                        <div className="flex items-center space-x-3">
-                          <span className="text-2xl">{service.icon}</span>
-                          <div className="flex-1">
-                            <h4 className="font-semibold text-foreground group-hover:text-green-600">
-                              {service.name}
-                            </h4>
-                            <p className="text-sm text-muted-foreground">{service.description}</p>
-                          </div>
-                          <ChevronRight size={16} className="text-muted-foreground" />
-                        </div>
-                      </button>
-                    ))}
-                  </div>
+            {/* Chat Messages */}
+            <div className="flex-1 p-4 space-y-4 overflow-y-auto bg-gray-50">
+              {/* Welcome Message */}
+              <div className="flex items-start space-x-2">
+                <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                  <span className="text-white text-sm font-bold">SC</span>
                 </div>
-              )}
-
-              {/* Step 2: Event Details */}
-              {currentStep === 1 && (
-                <div className="space-y-4">
-                  <div className="text-center">
-                    <h3 className="text-lg font-semibold mb-2">Event Details</h3>
-                    <p className="text-sm text-muted-foreground">Tell us about your event</p>
-                  </div>
-                  
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="eventType">Event Type</Label>
-                      <Select value={formData.eventType} onValueChange={(value) => setFormData(prev => ({ ...prev, eventType: value }))}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select event type" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {eventTypes.map((type) => (
-                            <SelectItem key={type} value={type}>{type}</SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="guestCount">Number of Guests</Label>
-                      <Input
-                        id="guestCount"
-                        type="number"
-                        value={formData.guestCount}
-                        onChange={(e) => setFormData(prev => ({ ...prev, guestCount: e.target.value }))}
-                        placeholder="Enter number of guests"
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="date">Event Date</Label>
-                      <Input
-                        id="date"
-                        type="date"
-                        value={formData.date}
-                        onChange={(e) => setFormData(prev => ({ ...prev, date: e.target.value }))}
-                        min={new Date().toISOString().split('T')[0]}
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="timeSlot">Preferred Time</Label>
-                      <Select value={formData.timeSlot} onValueChange={(value) => setFormData(prev => ({ ...prev, timeSlot: value }))}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select time slot" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {timeSlots.map((slot) => (
-                            <SelectItem key={slot} value={slot}>{slot}</SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="location">Event Location</Label>
-                      <Input
-                        id="location"
-                        value={formData.location}
-                        onChange={(e) => setFormData(prev => ({ ...prev, location: e.target.value }))}
-                        placeholder="Enter event location"
-                      />
-                    </div>
-                  </div>
+                <div className="bg-white p-3 rounded-lg shadow-sm max-w-[80%]">
+                  <p className="text-sm">Hello! 👋 Welcome to Shalu Caters!</p>
+                  <p className="text-sm mt-1">I'm here to help you with your event needs. What service are you looking for?</p>
+                  <span className="text-xs text-gray-500 mt-1 block">Just now</span>
                 </div>
-              )}
-
-              {/* Step 3: Requirements */}
-              {currentStep === 2 && (
-                <div className="space-y-4">
-                  <div className="text-center">
-                    <h3 className="text-lg font-semibold mb-2">Special Requirements</h3>
-                    <p className="text-sm text-muted-foreground">Any specific needs or preferences?</p>
-                  </div>
-                  
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="requirements">Special Requirements</Label>
-                      <Textarea
-                        id="requirements"
-                        value={formData.requirements}
-                        onChange={(e) => setFormData(prev => ({ ...prev, requirements: e.target.value }))}
-                        placeholder="Any special requirements or requests..."
-                        rows={4}
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="name">Your Name</Label>
-                      <Input
-                        id="name"
-                        value={formData.name}
-                        onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                        placeholder="Enter your name"
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="phone">Phone Number</Label>
-                      <Input
-                        id="phone"
-                        type="tel"
-                        value={formData.phone}
-                        onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
-                        placeholder="Enter your phone number"
-                      />
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Step 4: Summary */}
-              {currentStep === 3 && (
-                <div className="space-y-4">
-                  <div className="text-center">
-                    <h3 className="text-lg font-semibold mb-2">Review Your Request</h3>
-                    <p className="text-sm text-muted-foreground">Please review before sending</p>
-                  </div>
-                  
-                  <div className="space-y-3 p-4 bg-muted/50 rounded-lg">
-                    <div className="flex items-center space-x-2">
-                      <Star size={16} className="text-yellow-500" />
-                      <span className="font-semibold">Service:</span>
-                      <span>{getCurrentService()?.name}</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Calendar size={16} className="text-blue-500" />
-                      <span className="font-semibold">Event:</span>
-                      <span>{formData.eventType}</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Users size={16} className="text-green-500" />
-                      <span className="font-semibold">Guests:</span>
-                      <span>{formData.guestCount}</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Clock size={16} className="text-purple-500" />
-                      <span className="font-semibold">Date:</span>
-                      <span>{formData.date}</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <MapPin size={16} className="text-red-500" />
-                      <span className="font-semibold">Location:</span>
-                      <span>{formData.location}</span>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Navigation Buttons */}
-              <div className="flex justify-between pt-4">
-                <Button
-                  variant="outline"
-                  onClick={handleBack}
-                  disabled={currentStep === 0}
-                >
-                  Back
-                </Button>
-                
-                {currentStep < 3 ? (
-                  <Button
-                    onClick={handleNext}
-                    disabled={
-                      (currentStep === 0 && !selectedService) ||
-                      (currentStep === 1 && (!formData.eventType || !formData.guestCount || !formData.date))
-                    }
-                  >
-                    Next
-                  </Button>
-                ) : (
-                  <Button
-                    onClick={handleSubmit}
-                    className="bg-green-600 hover:bg-green-700"
-                  >
-                    Send to WhatsApp
-                  </Button>
-                )}
               </div>
-            </CardContent>
-          </Card>
+
+              {/* Service Options */}
+              {!showServices ? (
+                <div className="space-y-3">
+                  <div className="flex items-start space-x-2">
+                    <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                      <span className="text-white text-sm font-bold">SC</span>
+                    </div>
+                    <div className="bg-white p-3 rounded-lg shadow-sm max-w-[80%]">
+                      <p className="text-sm mb-3">Here are our premium services:</p>
+                      <div className="grid grid-cols-2 gap-2">
+                        {services.slice(0, 4).map((service) => (
+                          <button
+                            key={service.id}
+                            onClick={() => handleServiceSelect(service)}
+                            className="p-2 bg-green-50 hover:bg-green-100 rounded-lg text-left transition-colors"
+                          >
+                            <div className="flex items-center space-x-2">
+                              <span className="text-lg">{service.icon}</span>
+                              <div>
+                                <p className="text-xs font-semibold text-gray-800">{service.name}</p>
+                                <p className="text-xs text-green-600">{service.price}</p>
+                              </div>
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                      <button
+                        onClick={() => setShowServices(true)}
+                        className="mt-2 text-sm text-green-600 hover:text-green-700 font-medium"
+                      >
+                        View all services →
+                      </button>
+                      <span className="text-xs text-gray-500 mt-1 block">Just now</span>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  <div className="flex items-start space-x-2">
+                    <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                      <span className="text-white text-sm font-bold">SC</span>
+                    </div>
+                    <div className="bg-white p-3 rounded-lg shadow-sm max-w-[80%]">
+                      <p className="text-sm mb-3">Our complete service menu:</p>
+                      <div className="space-y-2">
+                        {services.map((service) => (
+                          <button
+                            key={service.id}
+                            onClick={() => handleServiceSelect(service)}
+                            className="w-full p-3 bg-green-50 hover:bg-green-100 rounded-lg text-left transition-colors group"
+                          >
+                            <div className="flex items-center space-x-3">
+                              <span className="text-2xl">{service.icon}</span>
+                              <div className="flex-1">
+                                <p className="font-semibold text-gray-800 group-hover:text-green-700">{service.name}</p>
+                                <p className="text-xs text-gray-600">{service.description}</p>
+                                <p className="text-xs text-green-600 font-medium">{service.price}</p>
+                              </div>
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                      <span className="text-xs text-gray-500 mt-1 block">Just now</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Quick Contact Options */}
+              <div className="flex items-start space-x-2">
+                <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                  <span className="text-white text-sm font-bold">SC</span>
+                </div>
+                <div className="bg-white p-3 rounded-lg shadow-sm max-w-[80%]">
+                  <p className="text-sm mb-3">Or contact us directly:</p>
+                  <div className="space-y-2">
+                    <button
+                      onClick={handleDirectContact}
+                      className="w-full p-2 bg-green-500 hover:bg-green-600 text-white rounded-lg text-sm font-medium transition-colors flex items-center justify-center space-x-2"
+                    >
+                      <Phone size={16} />
+                      <span>Get Quote & Book</span>
+                    </button>
+                    <button
+                      onClick={() => setShowServices(!showServices)}
+                      className="w-full p-2 border border-green-500 text-green-600 hover:bg-green-50 rounded-lg text-sm font-medium transition-colors"
+                    >
+                      {showServices ? '← Back to Quick View' : 'View All Services'}
+                    </button>
+                  </div>
+                  <span className="text-xs text-gray-500 mt-1 block">Just now</span>
+                </div>
+              </div>
+            </div>
+
+            {/* WhatsApp Footer */}
+            <div className="bg-white border-t p-4">
+              <div className="flex items-center space-x-2 text-sm text-gray-600">
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                <span>Shalu Caters is typing...</span>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </>

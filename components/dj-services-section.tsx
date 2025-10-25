@@ -184,13 +184,13 @@ export default function DjServicesSection() {
                   
                   <Button
                     onClick={() => handleBooking(pkg.name)}
-                    className={`w-full ${
+                    className={`w-full font-bold py-4 px-6 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 border-2 animate-pulse ${
                       pkg.popular 
-                        ? 'bg-purple-600 hover:bg-purple-700' 
-                        : 'bg-primary hover:bg-primary/90'
+                        ? 'bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white border-purple-300 hover:border-purple-400' 
+                        : 'bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white border-orange-300 hover:border-orange-400'
                     }`}
                   >
-                    Book {pkg.name}
+                    📞 Book {pkg.name}
                   </Button>
                 </CardContent>
               </Card>
@@ -209,9 +209,9 @@ export default function DjServicesSection() {
           <Button
             size="lg"
             onClick={() => handleBooking("DJ Services")}
-            className="bg-purple-600 hover:bg-purple-700 text-white text-lg px-8 py-6"
+            className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-bold text-lg px-10 py-6 rounded-lg shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300 border-2 border-purple-300 hover:border-purple-400 animate-pulse"
           >
-            Get DJ Quote Now
+            📞 Get DJ Quote Now
           </Button>
         </div>
       </div>

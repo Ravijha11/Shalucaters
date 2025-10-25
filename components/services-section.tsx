@@ -109,9 +109,9 @@ export default function ServicesSection() {
                   <p className="text-muted-foreground text-sm leading-relaxed">{service.description}</p>
                   <Button
                     onClick={() => handleBooking(service.whatsappText)}
-                    className="w-full bg-primary hover:bg-primary/90"
+                    className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 border-2 border-white/20 hover:border-white/40 animate-pulse"
                   >
-                    Book Now
+                    📞 Book Now
                   </Button>
                 </div>
               </CardContent>

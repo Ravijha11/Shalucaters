@@ -29,6 +29,22 @@ export default {
           title: "",
           subtitle: "",
         },
+        {
+          title: "",
+          subtitle: "",
+        },
+        {
+          title: "",
+          subtitle: "",
+        },
+        {
+          title: "",
+          subtitle: "",
+        },
+        {
+          title: "",
+          subtitle: "",
+        },
       ],
     },
     // Services Section
@@ -350,6 +366,22 @@ export default {
       tagline: "शालू कैटर्स – हर कार्यक्रम को स्वादिष्ट और मजेदार बनाना",
       bookEvent: "📞 अभी अपना कार्यक्रम बुक करें",
       slides: [
+        {
+          title: "",
+          subtitle: "",
+        },
+        {
+          title: "",
+          subtitle: "",
+        },
+        {
+          title: "",
+          subtitle: "",
+        },
+        {
+          title: "",
+          subtitle: "",
+        },
         {
           title: "",
           subtitle: "",

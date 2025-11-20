@@ -38,18 +38,18 @@ const ServicesSection = memo(function ServicesSection() {
   }
 
   return (
-    <section id="services" className="py-8 sm:py-12 md:py-16 lg:py-24 bg-muted/30">
-      <div className="container mx-auto px-3 sm:px-4">
+    <section id="services" className="py-8 bg-muted/30">
+      <div className="container mx-auto px-4">
         {/* Section Header */}
-        <div className="text-center mb-8 sm:mb-12 md:mb-16 space-y-2 sm:space-y-3 md:space-y-4">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground text-balance px-2">{t("services.title")}</h2>
-          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto text-pretty px-2">
+        <div className="text-center mb-8 space-y-3">
+          <h2 className="text-2xl font-bold text-foreground text-balance px-2">{t("services.title")}</h2>
+          <p className="text-base text-muted-foreground max-w-full mx-auto text-pretty px-2">
             {t("services.subtitle")}
           </p>
         </div>
 
-        {/* Services Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
+        {/* Services Grid - Mobile First (Single Column) */}
+        <div className="grid grid-cols-1 gap-4">
           {services.map((service, index) => (
             <Card
               key={index}
@@ -57,30 +57,29 @@ const ServicesSection = memo(function ServicesSection() {
             >
               <CardContent className="p-0">
                 {/* Service Image */}
-                <div className="relative h-40 sm:h-48 overflow-hidden">
+                <div className="relative h-48 overflow-hidden">
                   <OptimizedImage
                     src={service.image || "/placeholder.svg"}
                     alt={service.title}
                     fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    sizes="100vw"
                     className="transition-transform duration-500 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  <div className="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 text-white">
-                    <service.icon size={24} className="sm:hidden mb-1" />
-                    <service.icon size={32} className="hidden sm:block mb-2" />
+                  <div className="absolute bottom-4 left-4 text-white">
+                    <service.icon size={32} className="mb-2" />
                   </div>
                 </div>
 
                 {/* Service Content */}
-                <div className="p-4 sm:p-6 space-y-3 sm:space-y-4">
-                  <h3 className="text-lg sm:text-xl font-bold text-foreground group-hover:text-primary transition-colors">
+                <div className="p-4 space-y-3">
+                  <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors">
                     {service.title}
                   </h3>
-                  <p className="text-muted-foreground text-xs sm:text-sm leading-relaxed">{service.description}</p>
+                  <p className="text-muted-foreground text-sm leading-relaxed">{service.description}</p>
                   <Button
                     onClick={() => handleBooking(service.title)}
-                    className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-bold py-2.5 sm:py-3 px-3 sm:px-4 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 border-2 border-white/20 hover:border-white/40 animate-pulse text-sm sm:text-base min-h-[44px] sm:min-h-[48px]"
+                    className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 border-2 border-white/20 hover:border-white/40 animate-pulse text-base min-h-[48px] touch-manipulation"
                   >
                     {t("services.bookNow")}
                   </Button>

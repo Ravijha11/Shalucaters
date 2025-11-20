@@ -238,6 +238,7 @@ export default function MasalaMachineSection() {
                 src="/traditional-masala-grinding-machine-with-aromatic-.jpg"
                 alt="Traditional Masala Grinding"
                 className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
+                loading="lazy"
               />
             </div>
             <div className="relative h-64 rounded-2xl overflow-hidden shadow-xl">
@@ -245,6 +246,7 @@ export default function MasalaMachineSection() {
                 src="/masala-grinding-machine-in-action-with-aromatic-sp.jpg"
                 alt="Masala Machine in Action"
                 className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
+                loading="lazy"
               />
             </div>
           </div>

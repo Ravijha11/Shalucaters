@@ -3,6 +3,10 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import AnalyticsTracker from '@/components/analytics-tracker'
 import PerformanceOptimizer from '@/components/performance-optimizer'
+import ResourceHints from '@/components/resource-hints'
+import BandwidthOptimizer from '@/components/bandwidth-optimizer'
+import ServiceWorkerRegister from '@/components/service-worker-register'
+import { LanguageProvider } from '@/contexts/language-context'
 import './globals.css'
 
 const _geist = Geist({ subsets: ["latin"] });
@@ -14,6 +18,12 @@ export const metadata: Metadata = {
   keywords: 'DJ services, catering, golgappe, masala machine, popcorn machine, wedding catering, party services, event planning',
   generator: 'Shalu Caters',
   authors: [{ name: 'Shalu Caters' }],
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 5,
+    userScalable: true,
+  },
   openGraph: {
     title: 'Shalu Caters - Premium Event Services',
     description: 'Professional DJ, catering, and event services for unforgettable celebrations',
@@ -28,12 +38,17 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body className={`font-sans antialiased`}>
-        {children}
-        <Analytics />
-        <AnalyticsTracker />
-        <PerformanceOptimizer />
+    <html lang="en" className="scroll-smooth">
+      <body className={`font-sans antialiased touch-manipulation`}>
+        <LanguageProvider>
+          <ResourceHints />
+          <ServiceWorkerRegister />
+          <BandwidthOptimizer />
+          {children}
+          <Analytics />
+          <AnalyticsTracker />
+          <PerformanceOptimizer />
+        </LanguageProvider>
       </body>
     </html>
   )

@@ -92,6 +92,7 @@ export default function GolgappeSection() {
                     src="/golgappe-machine-in-action-with-vendor-preparing-f.jpg"
                     alt="Golgappe Machine"
                     className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
+                    loading="lazy"
                   />
                 </div>
                 <div className="relative h-48 rounded-2xl overflow-hidden shadow-xl">
@@ -99,6 +100,7 @@ export default function GolgappeSection() {
                     src="/fresh-golgappe-packets-in-bucket--crispy-puris--co.jpg"
                     alt="Golgappe Packets"
                     className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
+                    loading="lazy"
                   />
                 </div>
               </div>
@@ -108,6 +110,7 @@ export default function GolgappeSection() {
                     src="/hfgkjkjeo.png"
                     alt="Fresh Golgappe Service"
                     className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
+                    loading="lazy"
                   />
                 </div>
                 <div className="relative h-64 rounded-2xl overflow-hidden shadow-xl">
@@ -115,6 +118,7 @@ export default function GolgappeSection() {
                     src="/golgappe-street-food-stall-with-vendor-serving--co.jpg"
                     alt="Golgappe Street Food Stall"
                     className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
+                    loading="lazy"
                   />
                 </div>
               </div>

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import { Check, Star, Calculator, Users, Calendar, Zap } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -8,14 +8,15 @@ import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useLanguage } from "@/contexts/language-context"
 
-const eventTypes = [
-  { value: "wedding", label: "Wedding", multiplier: 1.5 },
-  { value: "birthday", label: "Birthday Party", multiplier: 1.0 },
-  { value: "corporate", label: "Corporate Event", multiplier: 1.2 },
-  { value: "festival", label: "Festival/Religious", multiplier: 0.9 },
-  { value: "anniversary", label: "Anniversary", multiplier: 1.1 },
-  { value: "other", label: "Other", multiplier: 1.0 }
+const eventTypeValues = [
+  { value: "wedding", multiplier: 1.5 },
+  { value: "birthday", multiplier: 1.0 },
+  { value: "corporate", multiplier: 1.2 },
+  { value: "festival", multiplier: 0.9 },
+  { value: "anniversary", multiplier: 1.1 },
+  { value: "other", multiplier: 1.0 }
 ]
 
 const basePackages = [
@@ -80,10 +81,18 @@ const addOnServices = [
 ]
 
 export default function PricingSection() {
+  const { t } = useLanguage()
   const [guestCount, setGuestCount] = useState(50)
   const [eventType, setEventType] = useState("birthday")
   const [selectedPackage, setSelectedPackage] = useState("premium")
   const [selectedAddOns, setSelectedAddOns] = useState<string[]>([])
+
+  const eventTypes = useMemo(() => {
+    return eventTypeValues.map(et => ({
+      ...et,
+      label: t(`pricing.eventTypes.${et.value}`) as string
+    }))
+  }, [t])
 
   const calculatePrice = (basePrice: number) => {
     const eventMultiplier = eventTypes.find(e => e.value === eventType)?.multiplier || 1.0
@@ -120,14 +129,14 @@ export default function PricingSection() {
         <div className="text-center mb-12 md:mb-16 space-y-4">
           <div className="inline-block">
             <Badge variant="secondary" className="text-sm font-semibold px-4 py-2">
-              💰 Smart Pricing Calculator
+              {t("pricing.badge")}
             </Badge>
           </div>
           <h2 className="text-3xl md:text-5xl font-bold text-foreground text-balance">
-            Transparent Pricing for Every Event
+            {t("pricing.title")}
           </h2>
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto text-pretty">
-            Get instant pricing based on your event requirements. Our smart algorithm calculates the perfect package for your budget and needs.
+            {t("pricing.subtitle")}
           </p>
         </div>
 
@@ -136,13 +145,13 @@ export default function PricingSection() {
           <CardHeader>
             <CardTitle className="text-2xl font-bold text-center mb-6">
               <Calculator className="inline-block mr-2" />
-              Event Pricing Calculator
+              {t("pricing.calculatorTitle")}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <Label htmlFor="guests">Number of Guests</Label>
+                <Label htmlFor="guests">{t("pricing.numberOfGuests")}</Label>
                 <Input
                   id="guests"
                   type="number"
@@ -154,10 +163,10 @@ export default function PricingSection() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="event-type">Event Type</Label>
+                <Label htmlFor="event-type">{t("pricing.eventType")}</Label>
                 <Select value={eventType} onValueChange={setEventType}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select event type" />
+                    <SelectValue placeholder={t("pricing.selectEventType")} />
                   </SelectTrigger>
                   <SelectContent>
                     {eventTypes.map((type) => (
@@ -171,12 +180,12 @@ export default function PricingSection() {
             </div>
             
             <div className="text-center p-4 bg-white dark:bg-gray-800 rounded-lg border-2 border-dashed border-gray-300">
-              <p className="text-sm text-muted-foreground mb-2">Estimated Price Range</p>
+              <p className="text-sm text-muted-foreground mb-2">{t("pricing.estimatedPriceRange")}</p>
               <div className="text-2xl font-bold text-primary">
                 ₹{calculatePrice(15000).toLocaleString()} - ₹{calculatePrice(65000).toLocaleString()}
               </div>
               <p className="text-xs text-muted-foreground mt-1">
-                Based on {guestCount} guests for {eventTypes.find(e => e.value === eventType)?.label}
+                {t("pricing.basedOn")} {guestCount} {t("pricing.guests")} {t("pricing.for")} {eventTypes.find(e => e.value === eventType)?.label}
               </p>
             </div>
           </CardContent>
@@ -185,9 +194,9 @@ export default function PricingSection() {
         {/* Package Comparison */}
         <div className="space-y-8 mb-16">
           <div className="text-center">
-            <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4">Choose Your Perfect Package</h3>
+            <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4">{t("pricing.choosePackage")}</h3>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              All packages include professional service, experienced staff, and quality equipment.
+              {t("pricing.packageSubtitle")}
             </p>
           </div>
 
@@ -200,7 +209,7 @@ export default function PricingSection() {
                 }`}>
                   {pkg.popular && (
                     <div className="absolute top-0 right-0 bg-purple-500 text-white px-4 py-1 text-sm font-semibold rounded-bl-lg">
-                      Most Popular
+                      {t("pricing.mostPopular")}
                     </div>
                   )}
                   <CardContent className="p-8 space-y-6">
@@ -227,7 +236,7 @@ export default function PricingSection() {
                           : 'bg-primary hover:bg-primary/90'
                       }`}
                     >
-                      Book {pkg.name}
+                      {t("pricing.bookPackage")} {pkg.name}
                     </Button>
                   </CardContent>
                 </Card>
@@ -239,9 +248,9 @@ export default function PricingSection() {
         {/* Add-On Services */}
         <div className="space-y-8">
           <div className="text-center">
-            <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4">Add-On Services</h3>
+            <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4">{t("pricing.addOnServices")}</h3>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Customize your package with additional services to make your event even more special.
+              {t("pricing.addOnSubtitle")}
             </p>
           </div>
 
@@ -279,7 +288,7 @@ export default function PricingSection() {
 
           {selectedAddOns.length > 0 && (
             <div className="text-center p-6 bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/30 dark:to-blue-900/30 rounded-xl">
-              <h4 className="text-lg font-semibold text-foreground mb-2">Selected Add-Ons</h4>
+              <h4 className="text-lg font-semibold text-foreground mb-2">{t("pricing.selectedAddOns")}</h4>
               <div className="flex flex-wrap justify-center gap-2 mb-4">
                 {selectedAddOns.map((addOn) => (
                   <Badge key={addOn} variant="secondary" className="px-3 py-1">
@@ -288,7 +297,7 @@ export default function PricingSection() {
                 ))}
               </div>
               <p className="text-sm text-muted-foreground">
-                Add-ons will be included in your final quote
+                {t("pricing.addOnsIncluded")}
               </p>
             </div>
           )}
@@ -297,17 +306,17 @@ export default function PricingSection() {
         {/* Call to Action */}
         <div className="text-center mt-16 p-8 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-2xl">
           <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
-            Ready to Get Your Custom Quote?
+            {t("pricing.readyForQuote")}
           </h3>
           <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-            Contact us now for a detailed quote tailored to your specific event requirements and budget.
+            {t("pricing.readyForQuoteSubtitle")}
           </p>
           <Button
             size="lg"
             onClick={() => handleBooking("Custom Package", calculatePrice(35000))}
             className="bg-primary hover:bg-primary/90 text-white text-lg px-8 py-6"
           >
-            Get Custom Quote Now
+            {t("pricing.getCustomQuote")}
           </Button>
         </div>
       </div>

@@ -259,6 +259,7 @@ export default function PopcornMachineSection() {
                 src="/popcorn-machine-with-fresh-popcorn-popping--dj-sta.jpg"
                 alt="Popcorn Machine in Action"
                 className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
+                loading="lazy"
               />
             </div>
             <div className="relative h-64 rounded-2xl overflow-hidden shadow-xl">
@@ -266,6 +267,7 @@ export default function PopcornMachineSection() {
                 src="/vintage-popcorn-machine-with-fresh-popcorn-popping.jpg"
                 alt="Vintage Popcorn Machine"
                 className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
+                loading="lazy"
               />
             </div>
           </div>

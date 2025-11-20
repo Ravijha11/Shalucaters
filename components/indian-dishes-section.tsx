@@ -2,8 +2,9 @@
 
 import { Button } from "@/components/ui/button"
 import { Sparkles } from "lucide-react"
+import { useLanguage } from "@/contexts/language-context"
 
-const dishes = [
+const defaultDishes = [
   {
     name: "Paneer Tikka",
     description: "Marinated cottage cheese grilled to perfection with aromatic spices",
@@ -79,6 +80,26 @@ const dishes = [
 ]
 
 export default function IndianDishesSection() {
+  const { t } = useLanguage()
+  const menuContent = (t("menu") as any) ?? {}
+  const dishes = Array.isArray(menuContent.items)
+    ? defaultDishes.map((dish, index) => {
+        const override = menuContent.items[index]
+        return {
+          ...dish,
+          name: override?.name ?? dish.name,
+          description: override?.description ?? dish.description,
+          category: override?.category ?? dish.category,
+        }
+      })
+    : defaultDishes
+  const badgeLabel = menuContent.badge ?? "Our Menu"
+  const sectionTitle = menuContent.title ?? "Authentic Indian Vegetarian Delights"
+  const sectionSubtitle = menuContent.subtitle ?? "Experience the rich flavors of India with our carefully curated vegetarian menu"
+  const orderButton = menuContent.orderButton ?? "Order Now"
+  const ctaText = menuContent.ctaText ?? "Want to customize your menu? We can create a personalized selection for your event!"
+  const ctaButton = menuContent.ctaButton ?? "Customize Your Menu"
+
   return (
     <section
       id="menu"
@@ -98,13 +119,13 @@ export default function IndianDishesSection() {
         <div className="text-center mb-12 md:mb-16 space-y-4 animate-slide-in">
           <div className="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full mb-4">
             <Sparkles className="w-5 h-5 text-primary" />
-            <span className="text-primary font-semibold">Our Menu</span>
+            <span className="text-primary font-semibold">{badgeLabel}</span>
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground text-balance">
-            Authentic Indian Vegetarian Delights
+            {sectionTitle}
           </h2>
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto text-pretty">
-            Experience the rich flavors of India with our carefully curated vegetarian menu
+            {sectionSubtitle}
           </p>
         </div>
 
@@ -144,14 +165,14 @@ export default function IndianDishesSection() {
                 <Button
                   onClick={() => {
                     window.open(
-                      `https://wa.me/919876543210?text=Hello%20Shalu%20Caters!%20I%20would%20like%20to%20order%20${dish.name}%20for%20my%20event.`,
+                      `https://wa.me/917020924372?text=Hello%20Shalu%20Caters!%20I%20would%20like%20to%20order%20${dish.name}%20for%20my%20event.`,
                       "_blank",
                     )
                   }}
                   className="w-full bg-primary hover:bg-primary/90 text-white mt-2"
                   size="sm"
                 >
-                  Order Now
+                  {orderButton}
                 </Button>
               </div>
 
@@ -164,19 +185,19 @@ export default function IndianDishesSection() {
         {/* Bottom CTA */}
         <div className="text-center mt-12 md:mt-16">
           <p className="text-lg md:text-xl text-muted-foreground mb-6">
-            Want to customize your menu? We can create a personalized selection for your event!
+            {ctaText}
           </p>
           <Button
             size="lg"
             onClick={() => {
               window.open(
-                "https://wa.me/919876543210?text=Hello%20Shalu%20Caters!%20I%20would%20like%20to%20discuss%20a%20custom%20menu%20for%20my%20event.",
+                "https://wa.me/917020924372?text=Hello%20Shalu%20Caters!%20I%20would%20like%20to%20discuss%20a%20custom%20menu%20for%20my%20event.",
                 "_blank",
               )
             }}
             className="bg-secondary hover:bg-secondary/90 text-white px-8 py-6 text-lg shadow-xl hover:shadow-2xl transition-all"
           >
-            Customize Your Menu
+            {ctaButton}
           </Button>
         </div>
       </div>

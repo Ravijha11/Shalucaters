@@ -143,37 +143,6 @@ export default function PerformanceOptimizer() {
     }
   }, [])
 
-  // Bundle size optimization
-  useEffect(() => {
-    const optimizeBundle = () => {
-      // Dynamic imports for heavy components
-      const loadHeavyComponents = async () => {
-        if (window.location.hash === '#gallery') {
-          const { default: GallerySection } = await import('@/components/gallery-section')
-          // Component is already loaded, this is just for demonstration
-        }
-      }
-      
-      // Load components on demand
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const target = entry.target as HTMLElement
-            if (target.dataset.component) {
-              loadHeavyComponents()
-            }
-          }
-        })
-      })
-      
-      // Observe sections that might need heavy components
-      const sections = document.querySelectorAll('[data-component]')
-      sections.forEach(section => observer.observe(section))
-    }
-
-    optimizeBundle()
-  }, [])
-
   // Memory optimization
   useEffect(() => {
     const optimizeMemory = () => {

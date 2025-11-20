@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { useLanguage } from "@/contexts/language-context"
 
-const djServices = [
+const defaultDjServices = [
   {
     icon: Music,
     title: "Professional DJ Setup",
@@ -15,33 +15,9 @@ const djServices = [
     price: "Starting from ₹15,000",
     image: "/dj-stage-setup-with-colorful-lights--sound-equipme.jpg"
   },
-  {
-    icon: Volume2,
-    title: "Sound & Lighting",
-    description: "Complete audio-visual setup with dynamic lighting effects",
-    features: ["LED Stage Lights", "Fog Machine", "Spotlight Effects"],
-    price: "Starting from ₹8,000",
-    image: "/placeholder.svg"
-  },
-  {
-    icon: Mic,
-    title: "MC Services",
-    description: "Professional Master of Ceremonies for your special events",
-    features: ["Event Hosting", "Announcements", "Crowd Engagement"],
-    price: "Starting from ₹5,000",
-    image: "/placeholder.svg"
-  },
-  {
-    icon: Headphones,
-    title: "Music Library",
-    description: "Extensive collection of latest Bollywood, English & regional music",
-    features: ["Latest Hits", "Classic Songs", "Custom Playlists"],
-    price: "Included",
-    image: "/placeholder.svg"
-  }
 ]
 
-const djPackages = [
+const defaultDjPackages = [
   {
     name: "Basic DJ Package",
     price: "₹12,000",
@@ -86,6 +62,42 @@ const djPackages = [
 
 export default function DjServicesSection() {
   const { t } = useLanguage()
+  const translatedCards = t("djServices.cards") as any[]
+  const translatedPackages = t("djServices.packages") as any[]
+  const labels = (t("djServices.labels") as { mostPopular?: string; bookButton?: string }) ?? {}
+
+  const cardsFromTranslations = Array.isArray(translatedCards) ? translatedCards : []
+  const djServices =
+    cardsFromTranslations.length > 0
+      ? cardsFromTranslations.map((service, index) => {
+          const fallback = defaultDjServices[index % defaultDjServices.length] ?? defaultDjServices[0]
+          return {
+            ...fallback,
+            ...service,
+            icon: fallback.icon,
+            features: service?.features ?? fallback.features,
+            price: service?.price ?? fallback.price,
+            description: service?.description ?? fallback.description,
+            title: service?.title ?? fallback.title,
+          }
+        })
+      : defaultDjServices
+
+  const djPackages = defaultDjPackages.map((pkg, index) => {
+    const override = Array.isArray(translatedPackages) ? translatedPackages[index] : undefined
+    return {
+      ...pkg,
+      ...override,
+      features: override?.features ?? pkg.features,
+      duration: override?.duration ?? pkg.duration,
+      name: override?.name ?? pkg.name,
+      price: override?.price ?? pkg.price,
+      popular: override?.popular ?? pkg.popular,
+    }
+  })
+
+  const mostPopularLabel = labels.mostPopular ?? "Most Popular"
+  const bookButtonLabel = labels.bookButton ?? "📞 Book"
   
   const handleBooking = (packageName: string) => {
     const message = encodeURIComponent(
@@ -167,7 +179,7 @@ export default function DjServicesSection() {
               }`}>
                 {pkg.popular && (
                   <div className="absolute top-0 right-0 bg-purple-500 text-white px-4 py-1 text-sm font-semibold rounded-bl-lg">
-                    Most Popular
+                    {mostPopularLabel}
                   </div>
                 )}
                 <CardContent className="p-4 sm:p-6 md:p-8 space-y-4 sm:space-y-5 md:space-y-6">
@@ -194,7 +206,7 @@ export default function DjServicesSection() {
                         : 'bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white border-orange-300 hover:border-orange-400'
                     }`}
                   >
-                    📞 Book {pkg.name}
+                    {bookButtonLabel} {pkg.name}
                   </Button>
                 </CardContent>
               </Card>

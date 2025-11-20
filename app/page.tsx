@@ -49,10 +49,6 @@ const BookingForm = dynamic(() => import("@/components/booking-form"), {
   loading: () => <div className="h-96 bg-muted/30" />,
 })
 
-const GallerySection = dynamic(() => import("@/components/gallery-section"), {
-  loading: () => <div className="h-96 bg-muted/30" />,
-})
-
 const TestimonialsSection = dynamic(() => import("@/components/testimonials-section"), {
   loading: () => <div className="h-96 bg-muted/30" />,
 })
@@ -106,9 +102,6 @@ export default function Home() {
       </Suspense>
       <Suspense fallback={<div className="h-96 bg-muted/30" />}>
         <BookingForm />
-      </Suspense>
-      <Suspense fallback={<div className="h-96 bg-muted/30" />}>
-        <GallerySection />
       </Suspense>
       <Suspense fallback={<div className="h-96 bg-muted/30" />}>
         <TestimonialsSection />

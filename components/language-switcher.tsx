@@ -9,8 +9,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useLanguage } from "@/contexts/language-context"
+import { cn } from "@/lib/utils"
 
-export default function LanguageSwitcher() {
+export default function LanguageSwitcher({ className }: { className?: string }) {
   const { language, setLanguage } = useLanguage()
 
   return (
@@ -19,7 +20,10 @@ export default function LanguageSwitcher() {
         <Button
           variant="outline"
           size="sm"
-          className="gap-2 min-w-[100px]"
+          className={cn(
+            "gap-2 min-w-[120px] bg-white/90 text-foreground border border-border shadow-md hover:bg-white hover:text-foreground transition-colors",
+            className,
+          )}
           aria-label="Change language"
         >
           <Globe size={16} />
@@ -27,7 +31,10 @@ export default function LanguageSwitcher() {
           <span className="sm:hidden">{language === "en" ? "EN" : "HI"}</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="min-w-[150px]">
+      <DropdownMenuContent
+        align="end"
+        className="min-w-[170px] bg-white text-foreground border border-border shadow-xl backdrop-blur-none"
+      >
         <DropdownMenuItem
           onClick={() => setLanguage("en")}
           className={`cursor-pointer ${language === "en" ? "bg-primary/10 font-semibold" : ""}`}
@@ -46,6 +53,3 @@ export default function LanguageSwitcher() {
     </DropdownMenu>
   )
 }
-
-
-

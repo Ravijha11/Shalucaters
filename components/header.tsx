@@ -46,14 +46,19 @@ export default function Header() {
             <div className="text-xl font-bold text-primary">Shalu Caters</div>
           </Link>
 
-          {/* Menu Button - Always visible for mobile */}
-          <button 
-            className="text-foreground p-2 min-w-[48px] min-h-[48px] flex items-center justify-center touch-manipulation" 
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label="Toggle menu"
-          >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          <div className="flex items-center space-x-3">
+            <div className="flex-shrink-0">
+              <LanguageSwitcher />
+            </div>
+            {/* Menu Button - Always visible for mobile */}
+            <button 
+              className="text-foreground p-2 min-w-[48px] min-h-[48px] flex items-center justify-center touch-manipulation" 
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Navigation - Always mobile-first */}
@@ -70,7 +75,7 @@ export default function Header() {
               </Link>
             ))}
             <div className="px-4 pt-2 pb-3 space-y-3">
-              <LanguageSwitcher />
+              <LanguageSwitcher className="w-full justify-center" />
               <Button
                 onClick={() => {
                   window.open(

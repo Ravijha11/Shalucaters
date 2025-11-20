@@ -7,6 +7,7 @@ import ResourceHints from '@/components/resource-hints'
 import BandwidthOptimizer from '@/components/bandwidth-optimizer'
 import ServiceWorkerRegister from '@/components/service-worker-register'
 import { LanguageProvider } from '@/contexts/language-context'
+import LanguageSelectorWrapper from '@/components/language-selector-wrapper'
 import './globals.css'
 
 const _geist = Geist({ subsets: ["latin"] });
@@ -42,13 +43,15 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth">
       <body className={`font-sans antialiased touch-manipulation`}>
         <LanguageProvider>
-          <ResourceHints />
-          <ServiceWorkerRegister />
-          <BandwidthOptimizer />
-          {children}
-          <Analytics />
-          <AnalyticsTracker />
-          <PerformanceOptimizer />
+          <LanguageSelectorWrapper>
+            <ResourceHints />
+            <ServiceWorkerRegister />
+            <BandwidthOptimizer />
+            {children}
+            <Analytics />
+            <AnalyticsTracker />
+            <PerformanceOptimizer />
+          </LanguageSelectorWrapper>
         </LanguageProvider>
       </body>
     </html>

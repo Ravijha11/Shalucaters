@@ -65,9 +65,15 @@ export default function Footer() {
           <div>
             <h3 className="font-semibold text-base mb-3">{t("footer.contact")}</h3>
             <ul className="space-y-2 text-sm">
-              <li className="text-background/80 py-1">+91 98765 43210</li>
-              <li className="text-background/80 py-1">info@shalucaters.com</li>
-              <li className="text-background/80 py-1">Mumbai, Maharashtra</li>
+              <li className="text-background/80 py-1">
+                <a href="tel:+917020924372" className="hover:text-primary transition-colors">
+                  +91 70209 24372
+                </a>
+              </li>
+              <li className="text-background/80 py-1 leading-relaxed">
+                Bhikampura Road, Lahar<br />
+                District Bhind, Madhya Pradesh
+              </li>
             </ul>
           </div>
         </div>

@@ -1,23 +1,67 @@
 "use client"
 
-import { memo, useMemo } from "react"
+import { memo, useMemo, useState } from "react"
 import { Coffee, Popcorn, Sparkles, Music, Utensils, Cake, PartyPopper, CircleDot } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import OptimizedImage from "@/components/optimized-image"
+import Image from "next/image"
 import { useLanguage } from "@/contexts/language-context"
 
 const serviceIcons = [Coffee, Popcorn, Sparkles, CircleDot, Music, Utensils, Cake, PartyPopper]
 const serviceImages = [
-  "/professional-coffee-machine-with-steaming-espresso.jpg",
-  "/vintage-popcorn-machine-with-fresh-popcorn-popping.jpg",
-  "/traditional-masala-grinding-machine-with-aromatic-.jpg",
-  "/golgappe-street-food-stall-with-vendor-serving--co.jpg",
-  "/dj-stage-setup-with-colorful-lights--sound-equipme.jpg",
-  "/elegant-breakfast-buffet-spread-with-variety-of-di.jpg",
-  "/birthday-party-buffet-with-colorful-decorations--c.jpg",
-  "/elegant-wedding-buffet-with-beautiful-food-display.jpg",
+  "/coffee-machine-service.jpg",
+  "/popcorn-machine-service.png",
+  "/masala-grinding-machine-service.jpg",
+  "/golgappe-service.jpg",
+  "/stage-dj-setup-service.jpg",
+  "/buffet-breakfast-service.jpg",
+  "/birthday-catering-service.jpg",
+  "/elegant-wedding-buffet-with-beautiful-food-display.jpg", // Fallback for wedding catering
 ]
+
+// Service Image Component with Error Handling
+function ServiceImage({ src, alt, priority, icon: Icon }: { src: string; alt: string; priority?: boolean; icon: any }) {
+  const [imgError, setImgError] = useState(false)
+  const [imgLoaded, setImgLoaded] = useState(false)
+
+  return (
+    <div className="relative h-48 overflow-hidden bg-muted">
+      {/* Use regular img tag for more reliable loading */}
+      <img
+        src={src}
+        alt={alt}
+        className={`absolute inset-0 w-full h-full object-cover transition-all duration-500 group-hover:scale-110 ${
+          imgLoaded ? "opacity-100" : "opacity-0"
+        }`}
+        onLoad={() => setImgLoaded(true)}
+        onError={() => {
+          setImgError(true)
+          setImgLoaded(false)
+        }}
+        loading={priority ? "eager" : "lazy"}
+      />
+      
+      {/* Loading State */}
+      {!imgLoaded && !imgError && (
+        <div className="absolute inset-0 bg-muted animate-pulse flex items-center justify-center z-0">
+          <Icon size={32} className="text-muted-foreground/30" />
+        </div>
+      )}
+      
+      {/* Error State */}
+      {imgError && (
+        <div className="absolute inset-0 bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center z-0">
+          <Icon size={48} className="text-muted-foreground/50" />
+        </div>
+      )}
+      
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10 pointer-events-none" />
+      <div className="absolute bottom-4 left-4 text-white z-20 pointer-events-none">
+        <Icon size={32} className="mb-2" />
+      </div>
+    </div>
+  )
+}
 
 const ServicesSection = memo(function ServicesSection() {
   const { t } = useLanguage()
@@ -57,19 +101,12 @@ const ServicesSection = memo(function ServicesSection() {
             >
               <CardContent className="p-0">
                 {/* Service Image */}
-                <div className="relative h-48 overflow-hidden">
-                  <OptimizedImage
-                    src={service.image || "/placeholder.svg"}
-                    alt={service.title}
-                    fill
-                    sizes="100vw"
-                    className="transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  <div className="absolute bottom-4 left-4 text-white">
-                    <service.icon size={32} className="mb-2" />
-                  </div>
-                </div>
+                <ServiceImage 
+                  src={service.image || "/placeholder.svg"}
+                  alt={service.title}
+                  priority={index < 2}
+                  icon={service.icon}
+                />
 
                 {/* Service Content */}
                 <div className="p-4 space-y-3">

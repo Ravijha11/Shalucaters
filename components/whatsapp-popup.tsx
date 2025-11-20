@@ -109,22 +109,22 @@ Thank you!
 
   return (
     <>
-      {/* WhatsApp Button - Enhanced */}
+      {/* WhatsApp Button - Mobile Optimized */}
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white p-4 sm:p-5 rounded-full shadow-2xl transition-all duration-300 hover:scale-110 group animate-pulse"
+        className="fixed bottom-4 right-4 z-50 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white p-5 rounded-full shadow-2xl transition-all duration-300 hover:scale-110 group animate-pulse min-w-[56px] min-h-[56px] touch-manipulation"
+        aria-label="Open WhatsApp chat"
       >
-        <MessageCircle size={24} className="sm:hidden" />
-        <MessageCircle size={28} className="hidden sm:block" />
+        <MessageCircle size={28} />
         <div className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full animate-bounce font-bold">
           Live
         </div>
       </button>
 
-      {/* WhatsApp Chat Interface */}
+      {/* WhatsApp Chat Interface - Mobile First */}
       {isOpen && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
-          <div className="w-full h-[90vh] sm:h-[600px] sm:w-[400px] bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-end justify-center p-0">
+          <div className="w-full h-[90vh] bg-white rounded-t-2xl shadow-2xl flex flex-col overflow-hidden">
             {/* WhatsApp Header */}
             <div className="bg-green-500 text-white p-4 flex items-center justify-between">
               <div className="flex items-center space-x-3">
@@ -174,7 +174,7 @@ Thank you!
                           <button
                             key={service.id}
                             onClick={() => handleServiceSelect(service)}
-                            className="p-2 bg-green-50 hover:bg-green-100 rounded-lg text-left transition-colors"
+                            className="p-2 bg-green-50 hover:bg-green-100 rounded-lg text-left transition-colors min-h-[48px] touch-manipulation"
                           >
                             <div className="flex items-center space-x-2">
                               <span className="text-lg">{service.icon}</span>
@@ -209,7 +209,7 @@ Thank you!
                           <button
                             key={service.id}
                             onClick={() => handleServiceSelect(service)}
-                            className="w-full p-3 bg-green-50 hover:bg-green-100 rounded-lg text-left transition-colors group"
+                            className="w-full p-3 bg-green-50 hover:bg-green-100 rounded-lg text-left transition-colors group min-h-[48px] touch-manipulation"
                           >
                             <div className="flex items-center space-x-3">
                               <span className="text-2xl">{service.icon}</span>
@@ -238,14 +238,14 @@ Thank you!
                   <div className="space-y-2">
                     <button
                       onClick={handleDirectContact}
-                      className="w-full p-2 bg-green-500 hover:bg-green-600 text-white rounded-lg text-sm font-medium transition-colors flex items-center justify-center space-x-2"
+                      className="w-full p-3 bg-green-500 hover:bg-green-600 text-white rounded-lg text-base font-medium transition-colors flex items-center justify-center space-x-2 min-h-[48px] touch-manipulation"
                     >
-                      <Phone size={16} />
+                      <Phone size={18} />
                       <span>Get Quote & Book</span>
                     </button>
                     <button
                       onClick={() => setShowServices(!showServices)}
-                      className="w-full p-2 border border-green-500 text-green-600 hover:bg-green-50 rounded-lg text-sm font-medium transition-colors"
+                      className="w-full p-3 border border-green-500 text-green-600 hover:bg-green-50 rounded-lg text-base font-medium transition-colors min-h-[48px] touch-manipulation"
                     >
                       {showServices ? '← Back to Quick View' : 'View All Services'}
                     </button>

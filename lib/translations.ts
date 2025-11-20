@@ -18,44 +18,16 @@ export default {
       bookEvent: "📞 Book Your Event Now",
       slides: [
         {
-          title: "Fresh Golgappe Service",
-          subtitle: "Professional golgappe machines & bulk packets for your events",
+          title: "",
+          subtitle: "",
         },
         {
-          title: "Premium Golgappe Experience",
-          subtitle: "Authentic golgappe with traditional flavors and modern service",
+          title: "",
+          subtitle: "",
         },
         {
-          title: "Bulk Golgappe Packets",
-          subtitle: "Fresh golgappe packets in buckets for shops & events",
-        },
-        {
-          title: "Fresh Popcorn Machine",
-          subtitle: "Hot popcorn with multiple flavors for your entertainment",
-        },
-        {
-          title: "Vintage Popcorn Experience",
-          subtitle: "Classic popcorn machine for memorable events",
-        },
-        {
-          title: "Street Food Specialists",
-          subtitle: "Perfect for street vendors, shops & food businesses",
-        },
-        {
-          title: "Premium Coffee Experience",
-          subtitle: "Freshly brewed coffee for your special events",
-        },
-        {
-          title: "Exquisite Buffet Catering",
-          subtitle: "Delicious spreads for weddings, birthdays & parties",
-        },
-        {
-          title: "Fresh Masala Grinding",
-          subtitle: "Authentic flavors ground fresh at your event",
-        },
-        {
-          title: "Customized Breakfast",
-          subtitle: "Start your event with a perfect breakfast",
+          title: "",
+          subtitle: "",
         },
       ],
     },
@@ -379,44 +351,16 @@ export default {
       bookEvent: "📞 अभी अपना कार्यक्रम बुक करें",
       slides: [
         {
-          title: "ताजा गोलगप्पे सेवा",
-          subtitle: "आपके कार्यक्रमों के लिए पेशेवर गोलगप्पे मशीनें और बल्क पैकेट",
+          title: "",
+          subtitle: "",
         },
         {
-          title: "प्रीमियम गोलगप्पे अनुभव",
-          subtitle: "पारंपरिक स्वाद और आधुनिक सेवा के साथ प्रामाणिक गोलगप्पे",
+          title: "",
+          subtitle: "",
         },
         {
-          title: "बल्क गोलगप्पे पैकेट",
-          subtitle: "दुकानों और कार्यक्रमों के लिए बाल्टी में ताजा गोलगप्पे पैकेट",
-        },
-        {
-          title: "ताजा पॉपकॉर्न मशीन",
-          subtitle: "आपके मनोरंजन के लिए कई स्वादों के साथ गर्म पॉपकॉर्न",
-        },
-        {
-          title: "विंटेज पॉपकॉर्न अनुभव",
-          subtitle: "यादगार कार्यक्रमों के लिए क्लासिक पॉपकॉर्न मशीन",
-        },
-        {
-          title: "स्ट्रीट फूड विशेषज्ञ",
-          subtitle: "स्ट्रीट वेंडर्स, दुकानों और खाद्य व्यवसायों के लिए परफेक्ट",
-        },
-        {
-          title: "प्रीमियम कॉफी अनुभव",
-          subtitle: "आपके विशेष कार्यक्रमों के लिए ताज़ी ब्रू की गई कॉफी",
-        },
-        {
-          title: "उत्कृष्ट बुफे कैटरिंग",
-          subtitle: "शादियों, जन्मदिन और पार्टियों के लिए स्वादिष्ट व्यंजन",
-        },
-        {
-          title: "ताजा मसाला पीसाई",
-          subtitle: "आपके कार्यक्रम में ताज़ा पिसे प्रामाणिक स्वाद",
-        },
-        {
-          title: "कस्टमाइज्ड नाश्ता",
-          subtitle: "एक परफेक्ट नाश्ते के साथ अपना कार्यक्रम शुरू करें",
+          title: "",
+          subtitle: "",
         },
       ],
     },

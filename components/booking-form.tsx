@@ -65,13 +65,13 @@ Please confirm availability and provide pricing details.
   }
 
   return (
-    <section id="booking" className="py-16 md:py-24 bg-background">
+    <section id="booking" className="py-8 bg-background">
       <div className="container mx-auto px-4">
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-full mx-auto">
           {/* Section Header */}
-          <div className="text-center mb-12 space-y-4">
-            <h2 className="text-3xl md:text-5xl font-bold text-foreground text-balance">Book Your Event</h2>
-            <p className="text-lg text-muted-foreground text-pretty">
+          <div className="text-center mb-8 space-y-3">
+            <h2 className="text-2xl font-bold text-foreground text-balance">Book Your Event</h2>
+            <p className="text-base text-muted-foreground text-pretty">
               Fill in the details and we'll get back to you on WhatsApp instantly
             </p>
           </div>
@@ -79,10 +79,10 @@ Please confirm availability and provide pricing details.
           {/* Booking Form */}
           <Card className="border-2 shadow-xl">
             <CardHeader>
-              <CardTitle className="text-2xl">Event Details</CardTitle>
+              <CardTitle className="text-xl">Event Details</CardTitle>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-4">
                 {/* Name */}
                 <div className="space-y-2">
                   <Label htmlFor="name">Full Name *</Label>
@@ -92,6 +92,7 @@ Please confirm availability and provide pricing details.
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     placeholder="Enter your full name"
+                    className="min-h-[48px] text-base"
                   />
                 </div>
 
@@ -105,6 +106,7 @@ Please confirm availability and provide pricing details.
                     value={formData.contact}
                     onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
                     placeholder="Enter your WhatsApp number"
+                    className="min-h-[48px] text-base"
                   />
                 </div>
 
@@ -117,11 +119,12 @@ Please confirm availability and provide pricing details.
                     value={formData.eventType}
                     onChange={(e) => setFormData({ ...formData, eventType: e.target.value })}
                     placeholder="e.g., Wedding, Birthday, Corporate Event"
+                    className="min-h-[48px] text-base"
                   />
                 </div>
 
-                {/* Date and Time */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Date and Time - Stack on mobile */}
+                <div className="grid grid-cols-1 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="eventDate">Event Date *</Label>
                     <Input
@@ -130,6 +133,7 @@ Please confirm availability and provide pricing details.
                       required
                       value={formData.eventDate}
                       onChange={(e) => setFormData({ ...formData, eventDate: e.target.value })}
+                      className="min-h-[48px] text-base"
                     />
                   </div>
                   <div className="space-y-2">
@@ -140,6 +144,7 @@ Please confirm availability and provide pricing details.
                       required
                       value={formData.eventTime}
                       onChange={(e) => setFormData({ ...formData, eventTime: e.target.value })}
+                      className="min-h-[48px] text-base"
                     />
                   </div>
                 </div>
@@ -154,23 +159,25 @@ Please confirm availability and provide pricing details.
                     value={formData.guests}
                     onChange={(e) => setFormData({ ...formData, guests: e.target.value })}
                     placeholder="Approximate number of guests"
+                    className="min-h-[48px] text-base"
                   />
                 </div>
 
                 {/* Services Required */}
                 <div className="space-y-3">
                   <Label>Services Required *</Label>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 gap-3">
                     {serviceOptions.map((service) => (
-                      <div key={service} className="flex items-center space-x-2">
+                      <div key={service} className="flex items-center space-x-3 min-h-[48px]">
                         <Checkbox
                           id={service}
                           checked={formData.services.includes(service)}
                           onCheckedChange={() => handleServiceToggle(service)}
+                          className="min-w-[24px] min-h-[24px]"
                         />
                         <label
                           htmlFor={service}
-                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer touch-manipulation flex-1"
                         >
                           {service}
                         </label>
@@ -188,11 +195,12 @@ Please confirm availability and provide pricing details.
                     onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                     placeholder="Any special requirements or preferences..."
                     rows={4}
+                    className="min-h-[120px] text-base"
                   />
                 </div>
 
                 {/* Submit Button */}
-                <Button type="submit" size="lg" className="w-full bg-primary hover:bg-primary/90 text-lg py-6">
+                <Button type="submit" size="lg" className="w-full bg-primary hover:bg-primary/90 text-base py-4 min-h-[48px] touch-manipulation">
                   Send Booking Request via WhatsApp
                 </Button>
               </form>

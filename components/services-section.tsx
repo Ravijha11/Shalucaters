@@ -1,10 +1,9 @@
 "use client"
 
-import { memo, useMemo, useState, useEffect } from "react"
+import { memo, useMemo, useState } from "react"
 import { Coffee, Popcorn, Sparkles, Music, Utensils, Cake, PartyPopper, CircleDot } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import Image from "next/image"
 import { useLanguage } from "@/contexts/language-context"
 
 const serviceIcons = [Coffee, Popcorn, Sparkles, CircleDot, Music, Utensils, Cake, PartyPopper]

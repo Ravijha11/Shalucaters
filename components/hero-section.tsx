@@ -14,6 +14,17 @@ const heroSlideImages = [
   "/hfgkjkjeo.png",
 ]
 
+// Price information for each image
+const heroImagePrices = [
+  "₹4,000",
+  "₹2,500",
+  "₹30",
+  "₹3,000",
+  "₹200/plate",
+  "₹5,000",
+  "₹1,500",
+]
+
 const HeroSection = memo(function HeroSection() {
   const { t } = useLanguage()
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -134,6 +145,56 @@ const HeroSection = memo(function HeroSection() {
                   backgroundRepeat: "no-repeat",
                 }}
               />
+              
+              {/* Price Tag - Right Side, Just Above Bottom - Cool Design */}
+              {index === 2 ? (
+                // Paani Poori Packet - Show Price with Cool Design
+                <div className="absolute bottom-20 right-4 z-20 transform hover:scale-105 transition-transform duration-300">
+                  <div className="relative">
+                    {/* Main Price Badge */}
+                    <div className="bg-gradient-to-br from-orange-500 via-orange-600 to-red-600 text-white px-5 py-3 rounded-2xl shadow-2xl border-2 border-white/40 backdrop-blur-md relative overflow-hidden">
+                      {/* Shine effect */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full animate-shimmer"></div>
+                      
+                      {/* Price */}
+                      <div className="relative z-10">
+                        <div className="flex items-baseline gap-1">
+                          <span className="text-xs font-semibold opacity-90">₹</span>
+                          <span className="text-2xl font-bold leading-none">30</span>
+                        </div>
+                        <div className="text-xs mt-1.5 opacity-95 font-medium">50 pieces</div>
+                      </div>
+                      
+                      {/* Decorative corner */}
+                      <div className="absolute -top-1 -right-1 w-6 h-6 bg-white/30 rounded-bl-full"></div>
+                      <div className="absolute -bottom-1 -left-1 w-6 h-6 bg-white/30 rounded-tr-full"></div>
+                    </div>
+                    
+                    {/* Ribbon effect */}
+                    <div className="absolute -top-2 right-2 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-lg">
+                      BEST
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                // Other Products - Show "On Rent" with Cool Design
+                <div className="absolute bottom-20 right-4 z-20 transform hover:scale-105 transition-transform duration-300">
+                  <div className="bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-600 text-white px-5 py-3 rounded-2xl shadow-2xl border-2 border-white/40 backdrop-blur-md relative overflow-hidden">
+                    {/* Shine effect */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full animate-shimmer"></div>
+                    
+                    {/* Rent Badge */}
+                    <div className="relative z-10 flex items-center gap-2">
+                      <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                      <span className="text-sm font-bold tracking-wide">ON RENT</span>
+                    </div>
+                    
+                    {/* Decorative corner */}
+                    <div className="absolute -top-1 -right-1 w-6 h-6 bg-white/30 rounded-bl-full"></div>
+                    <div className="absolute -bottom-1 -left-1 w-6 h-6 bg-white/30 rounded-tr-full"></div>
+                  </div>
+                </div>
+              )}
             </div>
           ))
         ) : (

@@ -18,18 +18,19 @@ export const metadata: Metadata = {
   keywords: 'DJ services, catering, golgappe, masala machine, popcorn machine, wedding catering, party services, event planning',
   generator: 'Shalu Caters',
   authors: [{ name: 'Shalu Caters' }],
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 1,
-    userScalable: false, // Prevent zoom for better mobile UX
-  },
   openGraph: {
     title: 'Shalu Caters - Premium Event Services',
     description: 'Professional DJ, catering, and event services for unforgettable celebrations',
     type: 'website',
     locale: 'en_IN',
   },
+}
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false, // Prevent zoom for better mobile UX
 }
 
 export default function RootLayout({

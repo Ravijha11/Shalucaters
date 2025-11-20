@@ -1,10 +1,9 @@
 "use client"
 
-import { memo, useMemo, useState } from "react"
+import { memo, useMemo, useState, useEffect } from "react"
 import { Coffee, Popcorn, Sparkles, Music, Utensils, Cake, PartyPopper, CircleDot } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import Image from "next/image"
 import { useLanguage } from "@/contexts/language-context"
 
 const serviceIcons = [Coffee, Popcorn, Sparkles, CircleDot, Music, Utensils, Cake, PartyPopper]
@@ -22,38 +21,45 @@ const serviceImages = [
 // Service Image Component with Error Handling
 function ServiceImage({ src, alt, priority, icon: Icon }: { src: string; alt: string; priority?: boolean; icon: any }) {
   const [imgError, setImgError] = useState(false)
-  const [imgLoaded, setImgLoaded] = useState(false)
+  const [isMounted, setIsMounted] = useState(false)
+
+  // Only check for errors after component mounts (client-side only)
+  useEffect(() => {
+    setIsMounted(true)
+    if (!src) {
+      setImgError(true)
+      return
+    }
+    
+    const img = new Image()
+    img.src = src
+    img.onload = () => setImgError(false)
+    img.onerror = () => setImgError(true)
+  }, [src])
 
   return (
     <div className="relative h-48 overflow-hidden bg-muted">
-      {/* Use regular img tag for more reliable loading */}
-      <img
-        src={src}
-        alt={alt}
-        className={`absolute inset-0 w-full h-full object-cover transition-all duration-500 group-hover:scale-110 ${
-          imgLoaded ? "opacity-100" : "opacity-0"
+      {/* Background image - always render for hydration consistency */}
+      <div
+        className={`absolute inset-0 bg-cover bg-center transition-all duration-500 group-hover:scale-110 ${
+          imgError ? "opacity-0" : "opacity-100"
         }`}
-        onLoad={() => setImgLoaded(true)}
-        onError={() => {
-          setImgError(true)
-          setImgLoaded(false)
+        style={{
+          backgroundImage: `url(${src})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
         }}
-        loading={priority ? "eager" : "lazy"}
       />
       
-      {/* Loading State */}
-      {!imgLoaded && !imgError && (
-        <div className="absolute inset-0 bg-muted animate-pulse flex items-center justify-center z-0">
-          <Icon size={32} className="text-muted-foreground/30" />
-        </div>
-      )}
-      
-      {/* Error State */}
-      {imgError && (
-        <div className="absolute inset-0 bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center z-0">
-          <Icon size={48} className="text-muted-foreground/50" />
-        </div>
-      )}
+      {/* Error fallback - always render but show only on error */}
+      <div 
+        className={`absolute inset-0 bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center transition-opacity duration-300 ${
+          imgError ? "opacity-100" : "opacity-0"
+        }`}
+        style={{ pointerEvents: imgError ? "auto" : "none" }}
+      >
+        <Icon size={48} className="text-muted-foreground/50" />
+      </div>
       
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10 pointer-events-none" />
       <div className="absolute bottom-4 left-4 text-white z-20 pointer-events-none">

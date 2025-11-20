@@ -1,106 +1,126 @@
-// Service Worker for Shalu Caters Website
+// Service Worker for Offline Support and Aggressive Caching
 const CACHE_NAME = 'shalu-caters-v1'
-const urlsToCache = [
+const RUNTIME_CACHE = 'shalu-caters-runtime-v1'
+const IMAGE_CACHE = 'shalu-caters-images-v1'
+
+// Resources to cache immediately
+const PRECACHE_URLS = [
   '/',
-  '/app/page.tsx',
-  '/components/hero-section.tsx',
-  '/components/services-section.tsx',
-  '/components/dj-services-section.tsx',
-  '/components/masala-machine-section.tsx',
-  '/components/popcorn-machine-section.tsx',
-  '/components/pricing-section.tsx',
-  '/components/smart-booking-section.tsx',
-  '/components/about-section.tsx',
-  '/components/faq-section.tsx',
-  '/app/globals.css',
-  '/app/layout.tsx'
+  '/globals.css',
+  '/_next/static/css/app.css',
 ]
 
-// Install event
+// Install event - cache critical resources
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => {
-        console.log('Opened cache')
-        return cache.addAll(urlsToCache)
-      })
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(PRECACHE_URLS.filter(Boolean))
+    })
   )
+  self.skipWaiting()
 })
 
-// Fetch event
-self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request)
-      .then((response) => {
-        // Return cached version or fetch from network
-        if (response) {
-          return response
-        }
-        return fetch(event.request)
-      }
-    )
-  )
-})
-
-// Activate event
+// Activate event - clean up old caches
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheName !== CACHE_NAME) {
-            console.log('Deleting old cache:', cacheName)
-            return caches.delete(cacheName)
-          }
-        })
+        cacheNames
+          .filter((name) => name !== CACHE_NAME && name !== RUNTIME_CACHE && name !== IMAGE_CACHE)
+          .map((name) => caches.delete(name))
       )
     })
   )
+  return self.clients.claim()
 })
 
-// Background sync for offline functionality
-self.addEventListener('sync', (event) => {
-  if (event.tag === 'background-sync') {
-    event.waitUntil(doBackgroundSync())
-  }
-})
+// Fetch event - serve from cache, fallback to network
+self.addEventListener('fetch', (event) => {
+  const { request } = event
+  const url = new URL(request.url)
 
-async function doBackgroundSync() {
-  // Handle offline form submissions
-  const pendingSubmissions = await getPendingSubmissions()
-  for (const submission of pendingSubmissions) {
-    try {
-      await submitForm(submission)
-      await removePendingSubmission(submission.id)
-    } catch (error) {
-      console.error('Failed to sync submission:', error)
-    }
-  }
-}
+  // Skip non-GET requests
+  if (request.method !== 'GET') return
 
-// Push notifications for booking updates
-self.addEventListener('push', (event) => {
-  const options = {
-    body: event.data ? event.data.text() : 'New booking update available',
-    icon: '/placeholder-logo.png',
-    badge: '/placeholder-logo.png',
-    vibrate: [100, 50, 100],
-    data: {
-      dateOfArrival: Date.now(),
-      primaryKey: 1
-    }
+  // Skip cross-origin requests (except images)
+  if (url.origin !== location.origin && !request.url.match(/\.(jpg|jpeg|png|gif|webp|avif|svg)$/i)) {
+    return
   }
-  
-  event.waitUntil(
-    self.registration.showNotification('Shalu Caters', options)
-  )
-})
 
-// Notification click handler
-self.addEventListener('notificationclick', (event) => {
-  event.notification.close()
-  
-  event.waitUntil(
-    clients.openWindow('/')
+  // Handle images with aggressive caching
+  if (request.url.match(/\.(jpg|jpeg|png|gif|webp|avif|svg)$/i)) {
+    event.respondWith(
+      caches.open(IMAGE_CACHE).then((cache) => {
+        return cache.match(request).then((cachedResponse) => {
+          if (cachedResponse) {
+            return cachedResponse
+          }
+          return fetch(request)
+            .then((response) => {
+              if (response.status === 200) {
+                cache.put(request, response.clone())
+              }
+              return response
+            })
+            .catch(() => {
+              // Return placeholder if offline
+              return new Response(
+                '<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="300" fill="#f3f4f6"/><text x="50%" y="50%" text-anchor="middle" fill="#9ca3af">Image unavailable</text></svg>',
+                { headers: { 'Content-Type': 'image/svg+xml' } }
+              )
+            })
+        })
+      })
+    )
+    return
+  }
+
+  // Handle HTML and CSS with network-first strategy
+  if (request.headers.get('accept')?.includes('text/html') || request.url.endsWith('.css')) {
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
+          const responseClone = response.clone()
+          caches.open(RUNTIME_CACHE).then((cache) => {
+            cache.put(request, responseClone)
+          })
+          return response
+        })
+        .catch(() => {
+          return caches.match(request).then((cachedResponse) => {
+            if (cachedResponse) {
+              return cachedResponse
+            }
+            // Return offline page
+            return new Response('Offline - Please check your connection', {
+              headers: { 'Content-Type': 'text/html' },
+            })
+          })
+        })
+    )
+    return
+  }
+
+  // Handle other resources with cache-first strategy
+  event.respondWith(
+    caches.match(request).then((cachedResponse) => {
+      if (cachedResponse) {
+        return cachedResponse
+      }
+      return fetch(request)
+        .then((response) => {
+          if (response.status === 200) {
+            const responseClone = response.clone()
+            caches.open(RUNTIME_CACHE).then((cache) => {
+              cache.put(request, responseClone)
+            })
+          }
+          return response
+        })
+        .catch(() => {
+          // Return cached version if available
+          return caches.match(request)
+        })
+    })
   )
 })

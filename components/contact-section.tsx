@@ -2,17 +2,19 @@
 
 import { Mail, Phone, MapPin, Instagram, Facebook } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { useLanguage } from "@/contexts/language-context"
 
 export default function ContactSection() {
+  const { t } = useLanguage()
   return (
     <section id="contact" className="py-16 md:py-24 bg-muted/30">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
           {/* Section Header */}
           <div className="text-center mb-12 space-y-4">
-            <h2 className="text-3xl md:text-5xl font-bold text-foreground text-balance">Get In Touch</h2>
+            <h2 className="text-3xl md:text-5xl font-bold text-foreground text-balance">{t("contact.title")}</h2>
             <p className="text-lg text-muted-foreground text-pretty">
-              Ready to make your event unforgettable? Contact us today!
+              {t("contact.subtitle")}
             </p>
           </div>
 
@@ -23,7 +25,7 @@ export default function ContactSection() {
               <div className="inline-flex items-center justify-center w-12 h-12 bg-primary/20 rounded-full">
                 <Phone className="text-primary" size={24} />
               </div>
-              <h3 className="font-semibold text-foreground">Call Us</h3>
+              <h3 className="font-semibold text-foreground">{t("contact.callUs")}</h3>
               <a href="tel:+917020924372" className="text-muted-foreground hover:text-primary transition-colors block">
                 +91 70209 24372
               </a>
@@ -34,7 +36,7 @@ export default function ContactSection() {
               <div className="inline-flex items-center justify-center w-12 h-12 bg-secondary/20 rounded-full">
                 <Mail className="text-secondary" size={24} />
               </div>
-              <h3 className="font-semibold text-foreground">Email Us</h3>
+              <h3 className="font-semibold text-foreground">{t("contact.emailUs")}</h3>
               <a
                 href="mailto:info@shalucaters.com"
                 className="text-muted-foreground hover:text-primary transition-colors block"
@@ -48,7 +50,7 @@ export default function ContactSection() {
               <div className="inline-flex items-center justify-center w-12 h-12 bg-accent/20 rounded-full">
                 <MapPin className="text-accent" size={24} />
               </div>
-              <h3 className="font-semibold text-foreground">Visit Us</h3>
+              <h3 className="font-semibold text-foreground">{t("contact.visitUs")}</h3>
               <p className="text-muted-foreground">Mumbai, Maharashtra</p>
             </div>
           </div>
@@ -84,7 +86,7 @@ export default function ContactSection() {
               }}
               className="bg-primary hover:bg-primary/90 text-lg px-8 py-6"
             >
-              Message Us on WhatsApp
+              {t("contact.messageWhatsApp")}
             </Button>
           </div>
         </div>

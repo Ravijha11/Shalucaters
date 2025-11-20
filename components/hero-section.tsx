@@ -1,90 +1,79 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, useMemo, useCallback, memo } from "react"
 import { Button } from "@/components/ui/button"
 import { ChevronLeft, ChevronRight } from "lucide-react"
+import { useThrottle } from "@/hooks/use-throttle"
+import { useLanguage } from "@/contexts/language-context"
 
-const heroSlides = [
-  {
-    image: "/gihghihgkihe.png",
-    title: "Fresh Golgappe Service",
-    subtitle: "Professional golgappe machines & bulk packets for your events",
-  },
-  {
-    image: "/hfgkjkjeo.png",
-    title: "Premium Golgappe Experience",
-    subtitle: "Authentic golgappe with traditional flavors and modern service",
-  },
-  {
-    image: "/hfgkjkjeo.png",
-    title: "Bulk Golgappe Packets",
-    subtitle: "Fresh golgappe packets in buckets for shops & events",
-  },
-  {
-    image: "/popcorn-machine-with-fresh-popcorn-popping--dj-sta.jpg",
-    title: "Fresh Popcorn Machine",
-    subtitle: "Hot popcorn with multiple flavors for your entertainment",
-  },
-  {
-    image: "/vintage-popcorn-machine-with-fresh-popcorn-popping.jpg",
-    title: "Vintage Popcorn Experience",
-    subtitle: "Classic popcorn machine for memorable events",
-  },
-  {
-    image: "/golgappe-street-food-stall-with-vendor-serving--co.jpg",
-    title: "Street Food Specialists",
-    subtitle: "Perfect for street vendors, shops & food businesses",
-  },
-  {
-    image: "/professional-coffee-machine-setup-at-elegant-event.jpg",
-    title: "Premium Coffee Experience",
-    subtitle: "Freshly brewed coffee for your special events",
-  },
-  {
-    image: "/beautiful-wedding-buffet-setup-with-elegant-food-d.jpg",
-    title: "Exquisite Buffet Catering",
-    subtitle: "Delicious spreads for weddings, birthdays & parties",
-  },
-  {
-    image: "/masala-grinding-machine-in-action-with-aromatic-sp.jpg",
-    title: "Fresh Masala Grinding",
-    subtitle: "Authentic flavors ground fresh at your event",
-  },
-  {
-    image: "/delicious-breakfast-spread-with-variety-of-dishes-.jpg",
-    title: "Customized Breakfast",
-    subtitle: "Start your event with a perfect breakfast",
-  },
+const heroSlideImages = [
+  "/gihghihgkihe.png",
+  "/hfgkjkjeo.png",
+  "/hfgkjkjeo.png",
+  "/popcorn-machine-with-fresh-popcorn-popping--dj-sta.jpg",
+  "/vintage-popcorn-machine-with-fresh-popcorn-popping.jpg",
+  "/golgappe-street-food-stall-with-vendor-serving--co.jpg",
+  "/professional-coffee-machine-setup-at-elegant-event.jpg",
+  "/beautiful-wedding-buffet-setup-with-elegant-food-d.jpg",
+  "/masala-grinding-machine-in-action-with-aromatic-sp.jpg",
+  "/delicious-breakfast-spread-with-variety-of-dishes-.jpg",
 ]
 
-export default function HeroSection() {
+const HeroSection = memo(function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0)
   const scrollRef = useRef<HTMLDivElement>(null)
+  const { t } = useLanguage()
 
+  // Get hero slides from translations
+  const heroSlides = useMemo(() => {
+    const slides = t("hero.slides")
+    if (!Array.isArray(slides)) return []
+    return slides.map((slide: any, index: number) => ({
+      ...slide,
+      image: heroSlideImages[index] || heroSlideImages[0],
+    }))
+  }, [t])
+
+  // Memoize slide calculations
+  const slideCount = useMemo(() => heroSlides.length, [heroSlides])
+
+  // Throttled slide navigation for better performance
+  const nextSlide = useThrottle(
+    useCallback(() => {
+      setCurrentSlide((prev) => (prev + 1) % slideCount)
+    }, [slideCount]),
+    300
+  )
+
+  const prevSlide = useThrottle(
+    useCallback(() => {
+      setCurrentSlide((prev) => (prev - 1 + slideCount) % slideCount)
+    }, [slideCount]),
+    300
+  )
+
+  // Optimized auto-slide with cleanup
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
+      setCurrentSlide((prev) => (prev + 1) % slideCount)
     }, 5000)
     return () => clearInterval(interval)
-  }, [])
+  }, [slideCount])
 
+  // Optimized scroll with requestAnimationFrame
   useEffect(() => {
     if (scrollRef.current) {
       const slideWidth = scrollRef.current.offsetWidth
-      scrollRef.current.scrollTo({
-        left: currentSlide * slideWidth,
-        behavior: "smooth",
+      requestAnimationFrame(() => {
+        if (scrollRef.current) {
+          scrollRef.current.scrollTo({
+            left: currentSlide * slideWidth,
+            behavior: "smooth",
+          })
+        }
       })
     }
   }, [currentSlide])
-
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
-  }
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length)
-  }
 
   return (
     <section id="home" className="relative h-[100vh] w-full overflow-hidden pt-16 md:pt-20">
@@ -130,7 +119,7 @@ export default function HeroSection() {
                       }}
                       className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-bold text-xs sm:text-sm md:text-lg px-4 py-3 sm:px-6 sm:py-4 md:px-10 md:py-6 animate-pulse shadow-2xl w-full sm:w-auto min-h-[48px] touch-manipulation border-2 border-white/30 hover:border-white/50 transform hover:scale-105 transition-all duration-300 backdrop-blur-sm"
                     >
-                      📞 Book Your Event Now
+                      {t("hero.bookEvent")}
                     </Button>
                   </div>
                 </div>
@@ -173,9 +162,11 @@ export default function HeroSection() {
       {/* Main Tagline Overlay - Fully Mobile Optimized */}
       <div className="absolute bottom-4 sm:bottom-8 md:bottom-20 left-1/2 -translate-x-1/2 text-center z-10 px-2 sm:px-4 w-full">
         <h2 className="text-sm sm:text-lg md:text-4xl font-bold text-white text-balance drop-shadow-2xl leading-tight">
-          Shalu Caters – Making Every Event Delicious & Fun
+          {t("hero.tagline")}
         </h2>
       </div>
     </section>
   )
-}
+})
+
+export default HeroSection

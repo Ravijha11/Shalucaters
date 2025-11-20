@@ -48,8 +48,8 @@ export default function LanguageSelector({ onLanguageSelected }: { onLanguageSel
   }
 
   return (
-    <div className="fixed inset-0 z-[9999] bg-gradient-to-br from-orange-500 via-red-600 to-orange-600 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full text-center space-y-6 animate-fade-in">
+    <div className="fixed bottom-4 right-4 z-[9999] w-[calc(100%-2rem)] max-w-sm pointer-events-none">
+      <div className="bg-white rounded-2xl shadow-2xl p-6 text-center space-y-5 animate-fade-in border border-orange-100 pointer-events-auto">
         {/* Icon */}
         <div className="flex justify-center">
           <div className="bg-gradient-to-br from-orange-500 to-red-600 rounded-full p-4">
@@ -68,23 +68,23 @@ export default function LanguageSelector({ onLanguageSelected }: { onLanguageSel
         </div>
 
         {/* Language Buttons */}
-        <div className="space-y-4 pt-4">
+        <div className="space-y-3 pt-2">
           <button
             onClick={() => handleLanguageSelect("en")}
-            className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-xl min-h-[56px] touch-manipulation border-2 border-white/20 hover:border-white/40"
+            className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-lg min-h-[48px] touch-manipulation border-2 border-orange-200 hover:border-orange-300"
           >
             English
           </button>
           <button
             onClick={() => handleLanguageSelect("hi")}
-            className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-xl min-h-[56px] touch-manipulation border-2 border-white/20 hover:border-white/40"
+            className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-lg min-h-[48px] touch-manipulation border-2 border-orange-200 hover:border-orange-300"
           >
             हिंदी
           </button>
         </div>
 
         {/* Welcome Message */}
-        <p className="text-sm text-gray-500 pt-2">
+        <p className="text-sm text-gray-500 pt-1">
           Welcome to Shalu Caters! 🎉
         </p>
       </div>

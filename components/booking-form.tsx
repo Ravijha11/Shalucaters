@@ -61,7 +61,7 @@ Please confirm availability and provide pricing details.
     `.trim()
 
     const encodedMessage = encodeURIComponent(message)
-    window.open(`https://wa.me/919876543210?text=${encodedMessage}`, "_blank")
+    window.open(`https://wa.me/917020924372?text=${encodedMessage}`, "_blank")
   }
 
   return (

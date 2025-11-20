@@ -188,8 +188,7 @@ The website is optimized for:
 
 For technical support or questions:
 - **Email**: support@shalucaters.com
-- **WhatsApp**: +91 9876543210
-- **Phone**: +91 9876543210
+- **WhatsApp / Phone**: +91 70209 24372
 
 ## 📄 License
 

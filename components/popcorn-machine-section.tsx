@@ -4,8 +4,9 @@ import { Popcorn, Zap, Clock, Users, Star, Heart } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { useLanguage } from "@/contexts/language-context"
 
-const popcornFlavors = [
+const defaultPopcornFlavors = [
   { name: "Classic Salted", color: "bg-yellow-100 text-yellow-800", popular: true },
   { name: "Butter Popcorn", color: "bg-yellow-100 text-yellow-800", popular: true },
   { name: "Caramel Sweet", color: "bg-amber-100 text-amber-800", popular: false },
@@ -16,7 +17,7 @@ const popcornFlavors = [
   { name: "Custom Flavors", color: "bg-purple-100 text-purple-800", popular: false }
 ]
 
-const popcornPackages = [
+const defaultPopcornPackages = [
   {
     name: "Basic Popcorn Service",
     price: "₹2,500",
@@ -62,7 +63,7 @@ const popcornPackages = [
   }
 ]
 
-const popcornBenefits = [
+const defaultPopcornBenefits = [
   {
     icon: Popcorn,
     title: "Fresh & Hot",
@@ -90,6 +91,57 @@ const popcornBenefits = [
 ]
 
 export default function PopcornMachineSection() {
+  const { t } = useLanguage()
+  const popcornContent = (t("popcorn") as any) ?? {}
+  const popcornBenefits = Array.isArray(popcornContent.benefits)
+    ? popcornContent.benefits.map((benefit: any, index: number) => {
+        const base = defaultPopcornBenefits[index] ?? defaultPopcornBenefits[0]
+        return {
+          ...base,
+          icon: base.icon,
+          title: benefit?.title ?? base.title,
+          description: benefit?.description ?? base.description,
+          benefit: benefit?.benefit ?? base.benefit,
+        }
+      })
+    : defaultPopcornBenefits
+  const popcornFlavors = defaultPopcornFlavors.map((flavor, index) => {
+    const override = Array.isArray(popcornContent.flavors) ? popcornContent.flavors[index] : undefined
+    return {
+      ...flavor,
+      name: override?.name ?? flavor.name,
+      popular: typeof override?.popular === "boolean" ? override.popular : flavor.popular,
+    }
+  })
+  const popcornPackages = defaultPopcornPackages.map((pkg, index) => {
+    const override = Array.isArray(popcornContent.packages) ? popcornContent.packages[index] : undefined
+    return {
+      ...pkg,
+      name: override?.name ?? pkg.name,
+      price: override?.price ?? pkg.price,
+      duration: override?.duration ?? pkg.duration,
+      capacity: override?.capacity ?? pkg.capacity,
+      features: override?.features ?? pkg.features,
+      popular: override?.popular ?? pkg.popular,
+    }
+  })
+  const whyChooseItems = Array.isArray(popcornContent.whyChoose)
+    ? popcornContent.whyChoose
+    : [
+        {
+          title: "Professional Equipment",
+          description: "High-quality popcorn machines for consistent results",
+        },
+        {
+          title: "Quick Service",
+          description: "Fast preparation to keep up with high demand",
+        },
+        {
+          title: "Experienced Staff",
+          description: "Trained operators for smooth service",
+        },
+      ]
+
   const handleBooking = (packageName: string) => {
     const message = encodeURIComponent(
       `Hello Shalu Caters! I would like to book the ${packageName} for my event. Please provide more details and pricing.`
@@ -104,20 +156,21 @@ export default function PopcornMachineSection() {
         <div className="text-center mb-12 md:mb-16 space-y-4">
           <div className="inline-block">
             <Badge variant="secondary" className="text-sm font-semibold px-4 py-2">
-              🍿 Fresh Popcorn Machine
+              {popcornContent.badge ?? "🍿 Fresh Popcorn Machine"}
             </Badge>
           </div>
           <h2 className="text-3xl md:text-5xl font-bold text-foreground text-balance">
-            Fresh Popcorn, Happy Crowds
+            {popcornContent.title ?? "Fresh Popcorn, Happy Crowds"}
           </h2>
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto text-pretty">
-            Add excitement to your event with our professional popcorn machines. Fresh, hot popcorn with multiple flavors to delight your guests.
+            {popcornContent.subtitle ??
+              "Add excitement to your event with our professional popcorn machines. Fresh, hot popcorn with multiple flavors to delight your guests."}
           </p>
         </div>
 
         {/* Benefits Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-          {popcornBenefits.map((benefit, index) => (
+          {popcornBenefits.map((benefit: any, index: number) => (
             <Card key={index} className="group overflow-hidden border-2 hover:border-yellow-500 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
               <CardContent className="p-6 space-y-4">
                 <div className="bg-yellow-100 dark:bg-yellow-900/30 p-3 rounded-lg w-fit">
@@ -141,15 +194,16 @@ export default function PopcornMachineSection() {
         <div className="bg-gradient-to-r from-yellow-100 to-orange-100 dark:from-yellow-900/30 dark:to-orange-900/30 rounded-2xl p-8 mb-16">
           <div className="text-center mb-8">
             <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
-              Delicious Popcorn Flavors
+              {popcornContent.flavorsTitle ?? "Delicious Popcorn Flavors"}
             </h3>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Choose from our wide variety of popcorn flavors to satisfy every taste preference.
+              {popcornContent.flavorsSubtitle ??
+                "Choose from our wide variety of popcorn flavors to satisfy every taste preference."}
             </p>
           </div>
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {popcornFlavors.map((flavor, index) => (
+            {popcornFlavors.map((flavor: any, index: number) => (
               <div key={index} className="relative">
                 <div className={`p-4 rounded-lg shadow-sm border-2 transition-all duration-300 hover:shadow-md ${
                   flavor.popular ? 'border-yellow-400 bg-yellow-50' : 'border-gray-200 bg-white'
@@ -163,7 +217,7 @@ export default function PopcornMachineSection() {
                 </div>
                 {flavor.popular && (
                   <div className="absolute -top-2 -right-2 bg-yellow-500 text-white text-xs px-2 py-1 rounded-full font-semibold">
-                    Popular
+                    {popcornContent.popularLabel ?? "Popular"}
                   </div>
                 )}
               </div>
@@ -174,20 +228,22 @@ export default function PopcornMachineSection() {
         {/* Popcorn Packages */}
         <div className="space-y-8 mb-16">
           <div className="text-center">
-            <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4">Popcorn Service Packages</h3>
+            <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
+              {popcornContent.packagesTitle ?? "Popcorn Service Packages"}
+            </h3>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Choose the perfect popcorn service package for your event size and requirements.
+              {popcornContent.packagesSubtitle ?? "Choose the perfect popcorn service package for your event size and requirements."}
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {popcornPackages.map((pkg, index) => (
+            {popcornPackages.map((pkg: any, index: number) => (
               <Card key={index} className={`relative overflow-hidden border-2 transition-all duration-300 hover:shadow-xl hover:-translate-y-2 ${
                 pkg.popular ? 'border-yellow-500 shadow-lg' : 'border-border hover:border-yellow-300'
               }`}>
                 {pkg.popular && (
                   <div className="absolute top-0 right-0 bg-yellow-500 text-white px-4 py-1 text-sm font-semibold rounded-bl-lg">
-                    Most Popular
+                    {popcornContent.mostPopular ?? "Most Popular"}
                   </div>
                 )}
                 <CardContent className="p-8 space-y-6">
@@ -198,7 +254,7 @@ export default function PopcornMachineSection() {
                   </div>
                   
                   <div className="space-y-3">
-                    {pkg.features.map((feature, idx) => (
+                    {pkg.features.map((feature: any, idx: number) => (
                       <div key={idx} className="flex items-center space-x-3">
                         <Zap size={16} className="text-yellow-500 flex-shrink-0" />
                         <span className="text-sm text-muted-foreground">{feature}</span>
@@ -214,7 +270,7 @@ export default function PopcornMachineSection() {
                         : 'bg-primary hover:bg-primary/90'
                     }`}
                   >
-                    Book {pkg.name}
+                    {(popcornContent.bookButton ?? "Book")} {pkg.name}
                   </Button>
                 </CardContent>
               </Card>
@@ -226,30 +282,21 @@ export default function PopcornMachineSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center mb-16">
           <div className="space-y-6">
             <h3 className="text-2xl md:text-3xl font-bold text-foreground">
-              Why Choose Our Popcorn Service?
+              {popcornContent.whyChooseTitle ?? "Why Choose Our Popcorn Service?"}
             </h3>
             <div className="space-y-4">
-              <div className="flex items-start space-x-3">
-                <Popcorn className="text-yellow-500 mt-1" size={20} />
-                <div>
-                  <h4 className="font-semibold text-foreground">Professional Equipment</h4>
-                  <p className="text-muted-foreground text-sm">High-quality popcorn machines for consistent results</p>
-                </div>
-              </div>
-              <div className="flex items-start space-x-3">
-                <Clock className="text-yellow-500 mt-1" size={20} />
-                <div>
-                  <h4 className="font-semibold text-foreground">Quick Service</h4>
-                  <p className="text-muted-foreground text-sm">Fast preparation to keep up with high demand</p>
-                </div>
-              </div>
-              <div className="flex items-start space-x-3">
-                <Users className="text-yellow-500 mt-1" size={20} />
-                <div>
-                  <h4 className="font-semibold text-foreground">Experienced Staff</h4>
-                  <p className="text-muted-foreground text-sm">Trained operators for smooth service</p>
-                </div>
-              </div>
+              {whyChooseItems.map((item: any, idx: number) => {
+                const Icon = idx === 0 ? Popcorn : idx === 1 ? Clock : Users
+                return (
+                  <div key={idx} className="flex items-start space-x-3">
+                    <Icon className="text-yellow-500 mt-1" size={20} />
+                    <div>
+                      <h4 className="font-semibold text-foreground">{item.title}</h4>
+                      <p className="text-muted-foreground text-sm">{item.description}</p>
+                    </div>
+                  </div>
+                )
+              })}
             </div>
           </div>
           
@@ -276,17 +323,17 @@ export default function PopcornMachineSection() {
         {/* Call to Action */}
         <div className="text-center p-8 bg-gradient-to-r from-yellow-100 to-orange-100 dark:from-yellow-900/30 dark:to-orange-900/30 rounded-2xl">
           <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
-            Ready to Pop Some Fun at Your Event?
+            {popcornContent.ctaTitle ?? "Ready to Pop Some Fun at Your Event?"}
           </h3>
           <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-            Contact us now to discuss your popcorn requirements and get a customized quote for your event.
+            {popcornContent.ctaSubtitle ?? "Contact us now to discuss your popcorn requirements and get a customized quote for your event."}
           </p>
           <Button
             size="lg"
             onClick={() => handleBooking("Popcorn Machine Service")}
             className="bg-yellow-600 hover:bg-yellow-700 text-white text-lg px-8 py-6"
           >
-            Get Popcorn Quote Now
+            {popcornContent.ctaButton ?? "Get Popcorn Quote Now"}
           </Button>
         </div>
       </div>

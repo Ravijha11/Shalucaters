@@ -1,6 +1,6 @@
 "use client"
 
-import { Mail, Phone, MapPin, Instagram, Facebook } from "lucide-react"
+import { Phone, MapPin, Instagram, Facebook } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/contexts/language-context"
 
@@ -31,27 +31,16 @@ export default function ContactSection() {
               </a>
             </div>
 
-            {/* Email */}
-            <div className="bg-card p-4 rounded-2xl shadow-lg text-center space-y-3 hover:shadow-xl transition-shadow min-h-[120px] flex flex-col justify-center touch-manipulation">
-              <div className="inline-flex items-center justify-center w-12 h-12 bg-secondary/20 rounded-full">
-                <Mail className="text-secondary" size={24} />
-              </div>
-              <h3 className="font-semibold text-foreground">{t("contact.emailUs")}</h3>
-              <a
-                href="mailto:info@shalucaters.com"
-                className="text-muted-foreground hover:text-primary transition-colors block min-h-[48px] flex items-center justify-center"
-              >
-                info@shalucaters.com
-              </a>
-            </div>
-
             {/* Location */}
             <div className="bg-card p-4 rounded-2xl shadow-lg text-center space-y-3 hover:shadow-xl transition-shadow min-h-[120px] flex flex-col justify-center">
               <div className="inline-flex items-center justify-center w-12 h-12 bg-accent/20 rounded-full">
                 <MapPin className="text-accent" size={24} />
               </div>
               <h3 className="font-semibold text-foreground">{t("contact.visitUs")}</h3>
-              <p className="text-muted-foreground">Mumbai, Maharashtra</p>
+              <p className="text-muted-foreground text-sm leading-relaxed">
+                Bhikampura Road, Lahar<br />
+                District Bhind, Madhya Pradesh
+              </p>
             </div>
           </div>
 

@@ -193,7 +193,7 @@ export default function RecommendationEngine({ userData }: { userData?: any }) {
     const message = encodeURIComponent(
       `Hello Shalu Caters! I'm interested in the ${recommendation.title} (₹${recommendation.price.toLocaleString()}). ${recommendation.reason}. Please provide more details.`
     )
-    window.open(`https://wa.me/919876543210?text=${message}`, "_blank")
+    window.open(`https://wa.me/917020924372?text=${message}`, "_blank")
   }
 
   if (isLoading) {

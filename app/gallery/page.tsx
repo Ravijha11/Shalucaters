@@ -1,4 +1,3 @@
-import GallerySection from "@/components/gallery-section"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 import WhatsAppButton from "@/components/whatsapp-button"
@@ -13,9 +12,6 @@ export default function GalleryPage() {
   return (
     <main className="min-h-screen">
       <Header />
-      <div className="pt-20">
-        <GallerySection />
-      </div>
       <Footer />
       <WhatsAppButton />
     </main>

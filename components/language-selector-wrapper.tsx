@@ -8,24 +8,27 @@ export default function LanguageSelectorWrapper({ children }: { children: React.
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const hasSelectedLanguage = localStorage.getItem("language")
-      if (hasSelectedLanguage === "en" || hasSelectedLanguage === "hi") {
-        setShowContent(true)
-      }
-      
-      // Listen for language selection event
-      const handleLanguageSelected = () => {
-        setShowContent(true)
-      }
-      
-      window.addEventListener("languageSelected", handleLanguageSelected)
-      
-      return () => {
-        window.removeEventListener("languageSelected", handleLanguageSelected)
-      }
-    }
     setMounted(true)
+
+    if (typeof window === "undefined") {
+      return
+    }
+
+    const hasSelectedLanguage = localStorage.getItem("language")
+    if (hasSelectedLanguage === "en" || hasSelectedLanguage === "hi") {
+      setShowContent(true)
+    }
+
+    // Listen for language selection event
+    const handleLanguageSelected = () => {
+      setShowContent(true)
+    }
+
+    window.addEventListener("languageSelected", handleLanguageSelected)
+
+    return () => {
+      window.removeEventListener("languageSelected", handleLanguageSelected)
+    }
   }, [])
 
   if (!mounted) {

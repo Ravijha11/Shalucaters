@@ -4,8 +4,9 @@ import { Sparkles, Package, Clock, Award, Users, Zap } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { useLanguage } from "@/contexts/language-context"
 
-const masalaFeatures = [
+const defaultMasalaFeatures = [
   {
     icon: Sparkles,
     title: "Fresh Ground Spices",
@@ -32,7 +33,7 @@ const masalaFeatures = [
   }
 ]
 
-const masalaServices = [
+const defaultMasalaServices = [
   {
     name: "Basic Masala Grinding",
     price: "₹3,000",
@@ -75,13 +76,49 @@ const masalaServices = [
   }
 ]
 
-const spiceVarieties = [
+const defaultSpiceVarieties = [
   "Garam Masala", "Cumin Powder", "Coriander Powder", "Red Chili Powder",
   "Turmeric Powder", "Garam Masala", "Kitchen King", "Chaat Masala",
   "Pav Bhaji Masala", "Biryani Masala", "Tandoori Masala", "Custom Mixes"
 ]
 
 export default function MasalaMachineSection() {
+  const { t } = useLanguage()
+  const masalaContent = (t("masala") as any) ?? {}
+  const masalaFeatures = Array.isArray(masalaContent.features)
+    ? defaultMasalaFeatures.map((feature, index) => {
+        const override = masalaContent.features[index]
+        return {
+          ...feature,
+          title: override?.title ?? feature.title,
+          description: override?.description ?? feature.description,
+          benefit: override?.benefit ?? feature.benefit,
+        }
+      })
+    : defaultMasalaFeatures
+  const masalaServices = Array.isArray(masalaContent.services)
+    ? masalaContent.services
+    : defaultMasalaServices
+  const spiceVarieties = Array.isArray(masalaContent.spices)
+    ? masalaContent.spices
+    : defaultSpiceVarieties
+  const whyChooseItems = Array.isArray(masalaContent.whyChoose)
+    ? masalaContent.whyChoose
+    : [
+        {
+          title: "Experienced Operators",
+          description: "Our skilled staff knows the perfect grinding techniques",
+        },
+        {
+          title: "Premium Quality Spices",
+          description: "We use only the finest quality whole spices",
+        },
+        {
+          title: "Hygienic Process",
+          description: "Clean, sanitized equipment and fresh packaging",
+        },
+      ]
+
   const handleBooking = (serviceName: string) => {
     const message = encodeURIComponent(
       `Hello Shalu Caters! I would like to book the ${serviceName} for my event. Please provide more details and pricing.`
@@ -96,20 +133,21 @@ export default function MasalaMachineSection() {
         <div className="text-center mb-12 md:mb-16 space-y-4">
           <div className="inline-block">
             <Badge variant="secondary" className="text-sm font-semibold px-4 py-2">
-              🌶️ Traditional Masala Grinding
+              {masalaContent.badge ?? "🌶️ Traditional Masala Grinding"}
             </Badge>
           </div>
           <h2 className="text-3xl md:text-5xl font-bold text-foreground text-balance">
-            Fresh Spices, Authentic Taste
+            {masalaContent.title ?? "Fresh Spices, Authentic Taste"}
           </h2>
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto text-pretty">
-            Experience the authentic taste of freshly ground spices with our traditional masala grinding machines. Perfect for weddings, restaurants, and food businesses.
+            {masalaContent.subtitle ??
+              "Experience the authentic taste of freshly ground spices with our traditional masala grinding machines. Perfect for weddings, restaurants, and food businesses."}
           </p>
         </div>
 
         {/* Features Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-          {masalaFeatures.map((feature, index) => (
+          {masalaFeatures.map((feature: any, index: number) => (
             <Card key={index} className="group overflow-hidden border-2 hover:border-orange-500 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
               <CardContent className="p-6 space-y-4">
                 <div className="bg-orange-100 dark:bg-orange-900/30 p-3 rounded-lg w-fit">
@@ -132,20 +170,22 @@ export default function MasalaMachineSection() {
         {/* Masala Services */}
         <div className="space-y-8 mb-16">
           <div className="text-center">
-            <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4">Masala Grinding Services</h3>
+            <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
+              {masalaContent.servicesTitle ?? "Masala Grinding Services"}
+            </h3>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Choose the perfect masala grinding service for your event or business needs.
+              {masalaContent.servicesSubtitle ?? "Choose the perfect masala grinding service for your event or business needs."}
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {masalaServices.map((service, index) => (
+            {masalaServices.map((service: any, index: number) => (
               <Card key={index} className={`relative overflow-hidden border-2 transition-all duration-300 hover:shadow-xl hover:-translate-y-2 ${
                 service.popular ? 'border-orange-500 shadow-lg' : 'border-border hover:border-orange-300'
               }`}>
                 {service.popular && (
                   <div className="absolute top-0 right-0 bg-orange-500 text-white px-4 py-1 text-sm font-semibold rounded-bl-lg">
-                    Most Popular
+                    {masalaContent.mostPopular ?? "Most Popular"}
                   </div>
                 )}
                 <CardContent className="p-8 space-y-6">
@@ -156,7 +196,7 @@ export default function MasalaMachineSection() {
                   </div>
                   
                   <div className="space-y-3">
-                    {service.features.map((feature, idx) => (
+                    {service.features.map((feature: any, idx: number) => (
                       <div key={idx} className="flex items-center space-x-3">
                         <Zap size={16} className="text-orange-500 flex-shrink-0" />
                         <span className="text-sm text-muted-foreground">{feature}</span>
@@ -172,7 +212,7 @@ export default function MasalaMachineSection() {
                         : 'bg-primary hover:bg-primary/90'
                     }`}
                   >
-                    Book {service.name}
+                    {(masalaContent.bookButton ?? "Book")} {service.name}
                   </Button>
                 </CardContent>
               </Card>
@@ -184,15 +224,15 @@ export default function MasalaMachineSection() {
         <div className="bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/30 dark:to-red-900/30 rounded-2xl p-8 mb-16">
           <div className="text-center mb-8">
             <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
-              Available Spice Varieties
+              {masalaContent.spiceTitle ?? "Available Spice Varieties"}
             </h3>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              We offer a wide range of freshly ground spices to meet all your culinary needs.
+              {masalaContent.spiceSubtitle ?? "We offer a wide range of freshly ground spices to meet all your culinary needs."}
             </p>
           </div>
           
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {spiceVarieties.map((spice, index) => (
+            {spiceVarieties.map((spice: any, index: number) => (
               <div key={index} className="flex items-center space-x-2 bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm">
                 <Sparkles size={16} className="text-orange-500 flex-shrink-0" />
                 <span className="text-sm font-medium text-foreground">{spice}</span>
@@ -205,30 +245,21 @@ export default function MasalaMachineSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           <div className="space-y-6">
             <h3 className="text-2xl md:text-3xl font-bold text-foreground">
-              Why Choose Our Masala Grinding Service?
+              {masalaContent.whyChooseTitle ?? "Why Choose Our Masala Grinding Service?"}
             </h3>
             <div className="space-y-4">
-              <div className="flex items-start space-x-3">
-                <Users className="text-orange-500 mt-1" size={20} />
-                <div>
-                  <h4 className="font-semibold text-foreground">Experienced Operators</h4>
-                  <p className="text-muted-foreground text-sm">Our skilled staff knows the perfect grinding techniques</p>
-                </div>
-              </div>
-              <div className="flex items-start space-x-3">
-                <Award className="text-orange-500 mt-1" size={20} />
-                <div>
-                  <h4 className="font-semibold text-foreground">Premium Quality Spices</h4>
-                  <p className="text-muted-foreground text-sm">We use only the finest quality whole spices</p>
-                </div>
-              </div>
-              <div className="flex items-start space-x-3">
-                <Package className="text-orange-500 mt-1" size={20} />
-                <div>
-                  <h4 className="font-semibold text-foreground">Hygienic Process</h4>
-                  <p className="text-muted-foreground text-sm">Clean, sanitized equipment and fresh packaging</p>
-                </div>
-              </div>
+              {whyChooseItems.map((item: any, idx: number) => {
+                const Icon = idx === 0 ? Users : idx === 1 ? Award : Package
+                return (
+                  <div key={idx} className="flex items-start space-x-3">
+                    <Icon className="text-orange-500 mt-1" size={20} />
+                    <div>
+                      <h4 className="font-semibold text-foreground">{item.title}</h4>
+                      <p className="text-muted-foreground text-sm">{item.description}</p>
+                    </div>
+                  </div>
+                )
+              })}
             </div>
           </div>
           
@@ -255,17 +286,17 @@ export default function MasalaMachineSection() {
         {/* Call to Action */}
         <div className="text-center mt-16 p-8 bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/30 dark:to-red-900/30 rounded-2xl">
           <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
-            Ready to Add Authentic Flavor to Your Event?
+            {masalaContent.ctaTitle ?? "Ready to Add Authentic Flavor to Your Event?"}
           </h3>
           <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-            Contact us now to discuss your masala grinding requirements and get a customized quote.
+            {masalaContent.ctaSubtitle ?? "Contact us now to discuss your masala grinding requirements and get a customized quote."}
           </p>
           <Button
             size="lg"
             onClick={() => handleBooking("Masala Grinding Service")}
             className="bg-orange-600 hover:bg-orange-700 text-white text-lg px-8 py-6"
           >
-            Get Masala Quote Now
+            {masalaContent.ctaButton ?? "Get Masala Quote Now"}
           </Button>
         </div>
       </div>
